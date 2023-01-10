@@ -4,7 +4,7 @@ import fetch from "node-fetch";
 import RssParser from "rss-parser";
 
 const urlToEmoji = {
-  "https://jonb.tumblr.com/rss?boop=ack": "💻",
+  "https://jonb.tumblr.com/rss": "💻",
   "https://medium.com/feed/@jonbell": "📝",
   "https://a-blog-about-jon-bell.ghost.io/fullrss/": "💬",
   "https://jbell.status.lol/feed": "🌟",
