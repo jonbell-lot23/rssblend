@@ -9,21 +9,29 @@ const urlToEmoji = {
   "https://a-blog-about-jon-bell.ghost.io/fullrss/": "💬",
   "https://jbell.status.lol/feed": "🌟",
   "https://mastodon.nz/@jon.rss": "🐘",
+  "https://picadilly.vercel.app/api/rss": "🌅",
+  "https://www.lexaloffle.com/bbs/feed.php?uid=17302": "👾",
+  "https://www.flickr.com/services/feeds/photos_public.gne?id=36521984990@N01&lang=en-us&format=rss":
+    "🏞️",
 };
 
 export default async (req: NextApiRequest, res: NextApiResponse) => {
   const feed = new rss({
-    title: "Combined RSS Feed",
+    title: "Jon Bell's Firehose",
     feed_url: "http://firehose.vercel.com/api/firehose",
     site_url: "http://firehose.vercel.com",
   });
 
   const rssFeedUrls = [
-    "https://jonb.tumblr.com/rss?boop=ack",
+    "https://jonb.tumblr.com/rss",
     "https://medium.com/feed/@jonbell",
     "https://a-blog-about-jon-bell.ghost.io/fullrss/",
     "https://jbell.status.lol/feed",
     "https://mastodon.nz/@jon.rss",
+    "https://picadilly.vercel.app/api/rss",
+    "https://www.lexaloffle.com/bbs/feed.php?uid=17302",
+    "https://jonbell.micro.blog/feed.xml",
+    "https://www.flickr.com/services/feeds/photos_public.gne?id=36521984990@N01&lang=en-us&format=rss",
   ];
 
   const feedPromises = rssFeedUrls.map((url) =>
