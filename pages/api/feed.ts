@@ -30,11 +30,14 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
     "https://a-blog-about-jon-bell.ghost.io/fullrss/",
     "https://jbell.status.lol/feed",
     "https://mastodon.nz/@jon.rss",
-    "https://picadilly.vercel.app/api/rss",
     "https://www.lexaloffle.com/bbs/feed.php?uid=17302",
     "https://jonbell.micro.blog/feed.xml",
-    "https://www.flickr.com/services/feeds/photos_public.gne?id=36521984990@N01&lang=en-us&format=rss",
   ];
+
+  /*
+  "https://picadilly.vercel.app/api/rss",
+  "https://www.flickr.com/services/feeds/photos_public.gne?id=36521984990@N01&lang=en-us&format=rss",
+  */ __dirname;
 
   const feedPromises = rssFeedUrls.map((url) =>
     fetch(url).then((res) => res.text())
