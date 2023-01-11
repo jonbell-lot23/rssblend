@@ -10,6 +10,9 @@ const urlToEmoji = {
   "https://jbell.status.lol/feed": "",
   "https://mastodon.nz/@jon.rss": "🐘",
   "https://www.lexaloffle.com/bbs/feed.php?uid=17302": "👾",
+  "https://flickr.com/services/feeds/photos_public.gne?id=36521984990@N01&lang=en-us&format=atom":
+    "🏞️",
+  "https://picadilly.vercel.app/api/rss": "🌅",
 };
 
 /*
@@ -20,8 +23,8 @@ const urlToEmoji = {
 export default async (req: NextApiRequest, res: NextApiResponse) => {
   const feed = new rss({
     title: "Jon Bell's Firehose",
-    feed_url: "http://firehose.vercel.com/api/firehose",
-    site_url: "http://firehose.vercel.com",
+    feed_url: "http://firehose.lot23.com/api/firehose",
+    site_url: "http://firehose.lot23.com",
   });
 
   const rssFeedUrls = [
@@ -32,6 +35,8 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
     "https://mastodon.nz/@jon.rss",
     "https://www.lexaloffle.com/bbs/feed.php?uid=17302",
     "https://jonbell.micro.blog/feed.xml",
+    "https://picadilly.vercel.app/api/rss",
+    "https://flickr.com/services/feeds/photos_public.gne?id=36521984990@N01&lang=en-us&format=atom",
   ];
 
   /*
