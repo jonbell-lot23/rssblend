@@ -4,7 +4,7 @@ const Feed = () => {
   const [feedData, setFeedData] = useState([]);
 
   useEffect(() => {
-    fetch("api/feed")
+    fetch("http://firehose.lot23.com/api/feed")
       .then((response) => response.text())
       .then((str) => {
         // parse the XML
