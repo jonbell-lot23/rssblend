@@ -13,6 +13,8 @@ const urlToEmoji = {
   "https://flickr.com/services/feeds/photos_public.gne?id=36521984990@N01&lang=en-us&format=atom":
     "🏞️",
   "https://picadilly.vercel.app/api/rss": "🌅",
+  "https://feeds.pinboard.in/rss/secret:9951275a502175fe617d/u:JonB/t:toshare/":
+    "🌏",
 };
 
 /*
@@ -37,6 +39,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
     "https://jonbell.micro.blog/feed.xml",
     "https://picadilly.vercel.app/api/rss",
     "https://flickr.com/services/feeds/photos_public.gne?id=36521984990@N01&lang=en-us&format=atom",
+    "https://feeds.pinboard.in/rss/secret:9951275a502175fe617d/u:JonB/t:toshare/",
   ];
 
   /*
