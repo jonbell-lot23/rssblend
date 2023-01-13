@@ -37,14 +37,14 @@ const Feed = () => {
   }, []);
 
   return (
-    <div className="container mx-auto prose">
+    <div className="mx-auto prose">
       <div className="py-4">
         {feedData.map((item, index) => (
           <>
-            <div key={index} className="bg-white p-4  mb-2">
+            <div key={index} className="p-4 mb-2">
               <a
                 href={item.link}
-                className="text-pink-600 text-decoration-none hover:underline"
+                className="text-pink-600 text-decoration-none text-truncate break-normal"
               >
                 {item.title.replace(/<[^>]+>/g, "").trim() ===
                 item.description.replace(/<[^>]+>/g, "").trim()

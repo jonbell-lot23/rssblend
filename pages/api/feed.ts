@@ -39,7 +39,6 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
     "https://www.lexaloffle.com/bbs/feed.php?uid=17302",
     "https://jonbell.micro.blog/feed.xml",
     "https://feeds.pinboard.in/rss/secret:9951275a502175fe617d/u:JonB/t:toshare/",
-    "https://picadilly.vercel.app/api/rss",
   ];
 
   /*

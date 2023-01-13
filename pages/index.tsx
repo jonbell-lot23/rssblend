@@ -9,9 +9,7 @@ const Home = () => {
         <title>Firehose!</title>
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <div>
-        <Feed />
-      </div>
+      <Feed />
     </div>
   );
 };
