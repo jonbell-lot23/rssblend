@@ -6,7 +6,7 @@ const Home = () => {
   return (
     <div>
       <Head>
-        <title>My RSS Feed</title>
+        <title>Firehose!</title>
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <div>

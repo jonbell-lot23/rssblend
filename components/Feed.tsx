@@ -23,7 +23,7 @@ const Feed = () => {
               item.querySelector("pubDate")?.textContent ||
               (item.querySelector("date")
                 ? item.querySelector("date").textContent
-                : "aaaaaaa"),
+                : "(no date)"),
           };
         });
 

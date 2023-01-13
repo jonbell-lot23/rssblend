@@ -88,6 +88,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
   /*
   console.log("-- XML --");
   console.log(xml);
+  
   */
 
   res.setHeader("Content-Type", "application/xml");
