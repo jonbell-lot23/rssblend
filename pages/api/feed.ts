@@ -67,13 +67,13 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
         const url = item.link;
         const feedUrl = rssFeedUrls[index];
         const emoji = urlToEmoji[feedUrl];
+
         const newItem = {
           title: item.title ? `${emoji} ${item.title}` : `${emoji}`,
           url,
           description,
-          date: item.pubDate,
+          date: item.pubDate ? item.pubDate : item.date,
           guid: item.guid,
-          fuck: "fuck",
         };
         feed.item(newItem);
 

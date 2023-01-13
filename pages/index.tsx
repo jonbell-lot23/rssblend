@@ -9,10 +9,8 @@ const Home = () => {
         <title>My RSS Feed</title>
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <div className="container mx-auto">
-        <div className="py-4">
-          <Feed />
-        </div>
+      <div>
+        <Feed />
       </div>
     </div>
   );
