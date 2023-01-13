@@ -46,7 +46,10 @@ const Feed = () => {
                 href={item.link}
                 className="text-pink-600 text-decoration-none hover:underline"
               >
-                {item.title === item.description ? null : item.title}
+                {item.title.replace(/<[^>]+>/g, "").trim() ===
+                item.description.replace(/<[^>]+>/g, "").trim()
+                  ? null
+                  : item.title}
               </a>
               <div
                 className="text-gray-700"
