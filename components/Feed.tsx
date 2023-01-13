@@ -37,32 +37,40 @@ const Feed = () => {
   }, []);
 
   return (
-    <div className="mx-auto prose">
-      <div className="py-4">
-        {feedData.map((item, index) => (
-          <>
-            <div key={index} className="p-4 mb-2">
-              <a
-                href={item.link}
-                className="text-pink-600 text-decoration-none text-truncate break-normal"
-              >
-                {item.title.replace(/<[^>]+>/g, "").trim() ===
-                item.description.replace(/<[^>]+>/g, "").trim()
-                  ? null
-                  : item.title}
-              </a>
-              <div
-                className="text-gray-700"
-                dangerouslySetInnerHTML={{ __html: item.description }}
-              />
+    <>
+      <link
+        rel="alternate"
+        type="application/rss+xml"
+        title="RSS"
+        href="http://firehose.lot23.com/api/feed"
+      />
+      <div className="mx-auto prose">
+        <div className="py-4">
+          {feedData.slice(0, 25).map((item, index) => (
+            <>
+              <div key={index} className="p-4 mb-2">
+                <a
+                  href={item.link}
+                  className="text-pink-600 text-decoration-none text-truncate break-normal"
+                >
+                  {item.title.replace(/<[^>]+>/g, "").trim() ===
+                  item.description.replace(/<[^>]+>/g, "").trim()
+                    ? null
+                    : item.title}
+                </a>
+                <div
+                  className="text-gray-700"
+                  dangerouslySetInnerHTML={{ __html: item.description }}
+                />
 
-              <p className="text-gray-400">{item.date}</p>
-            </div>
-            <div className="border-t pb-6 w-1/2 mx-auto"></div>
-          </>
-        ))}
+                <p className="text-gray-400">{item.date}</p>
+              </div>
+              <div className="border-t pb-6 w-1/2 mx-auto"></div>
+            </>
+          ))}
+        </div>
       </div>
-    </div>
+    </>
   );
 };
 
