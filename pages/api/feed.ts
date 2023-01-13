@@ -30,7 +30,6 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
   });
 
   const rssFeedUrls = [
-    "https://picadilly.vercel.app/api/rss",
     "https://flickr.com/services/feeds/photos_public.gne?id=36521984990@N01&lang=en-us&format=atom",
     "https://jonb.tumblr.com/rss",
     "https://medium.com/feed/@jonbell",
@@ -40,6 +39,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
     "https://www.lexaloffle.com/bbs/feed.php?uid=17302",
     "https://jonbell.micro.blog/feed.xml",
     "https://feeds.pinboard.in/rss/secret:9951275a502175fe617d/u:JonB/t:toshare/",
+    "https://picadilly.vercel.app/api/rss",
   ];
 
   /*
