@@ -30,6 +30,8 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
   });
 
   const rssFeedUrls = [
+    "https://picadilly.vercel.app/api/rss",
+    "https://flickr.com/services/feeds/photos_public.gne?id=36521984990@N01&lang=en-us&format=atom",
     "https://jonb.tumblr.com/rss",
     "https://medium.com/feed/@jonbell",
     "https://a-blog-about-jon-bell.ghost.io/fullrss/",
@@ -37,15 +39,13 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
     "https://mastodon.nz/@jon.rss",
     "https://www.lexaloffle.com/bbs/feed.php?uid=17302",
     "https://jonbell.micro.blog/feed.xml",
-    "https://picadilly.vercel.app/api/rss",
-    "https://flickr.com/services/feeds/photos_public.gne?id=36521984990@N01&lang=en-us&format=atom",
     "https://feeds.pinboard.in/rss/secret:9951275a502175fe617d/u:JonB/t:toshare/",
   ];
 
   /*
   "https://picadilly.vercel.app/api/rss",
   "https://www.flickr.com/services/feeds/photos_public.gne?id=36521984990@N01&lang=en-us&format=rss",
-  */ __dirname;
+  */
 
   const feedPromises = rssFeedUrls.map((url) =>
     fetch(url).then((res) => res.text())
@@ -88,7 +88,6 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
   /*
   console.log("-- XML --");
   console.log(xml);
-  
   */
 
   res.setHeader("Content-Type", "application/xml");
