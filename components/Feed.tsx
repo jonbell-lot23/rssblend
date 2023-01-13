@@ -12,12 +12,19 @@ const Feed = () => {
         const data = parser.parseFromString(str, "application/xml");
         // extract the RSS items
         const items = data.querySelectorAll("item");
+        console.log(items);
         const feedData = Array.from(items).map((item) => ({
           title: item.querySelector("title").textContent,
           link: item.querySelector("link").textContent,
           description: item.querySelector("description").textContent,
+          date: item.querySelector("pubDate")?.textContent,
         }));
 
+        feedData.sort(
+          (a, b) => new Date(b.date).getTime() - new Date(a.date).getTime()
+        );
+
+        /* console.log(feedData); */
         setFeedData(feedData);
       });
   }, []);
@@ -26,7 +33,10 @@ const Feed = () => {
     <div className="container mx-auto">
       <div className="py-4">
         {feedData.map((item, index) => (
-          <div key={index} className="bg-white p-4 rounded-lg shadow-md">
+          <div
+            key={index}
+            className="bg-white p-4 rounded-lg shadow-md prose mb-12"
+          >
             <a href={item.link} className="text-blue-500 hover:underline">
               {item.title}
             </a>
@@ -35,7 +45,7 @@ const Feed = () => {
               dangerouslySetInnerHTML={{ __html: item.description }}
             />
 
-            <p className="text-gray-600">{item.date}</p>
+            <p className="text-gray-400">{item.date}</p>
           </div>
         ))}
       </div>

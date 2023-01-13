@@ -73,8 +73,10 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
           description,
           date: item.pubDate,
           guid: item.guid,
+          fuck: "fuck",
         };
         feed.item(newItem);
+
         console.log("-- ITEM --");
         console.log(item);
       });
@@ -83,8 +85,10 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
 
   const xml = feed.xml();
 
+  /*
   console.log("-- XML --");
   console.log(xml);
+  */
 
   res.setHeader("Content-Type", "application/xml");
   res.send(xml);
