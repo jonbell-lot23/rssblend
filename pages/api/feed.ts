@@ -70,6 +70,19 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
           description = item["content:encoded"];
         }
 
+        // date work
+        let butts;
+
+        butts = null;
+
+        if ("date" in item) {
+          butts = item.pubDate;
+        }
+
+        if ("pubDate" in item) {
+          butts = item.pubDate;
+        }
+
         // deal with media enclosures
         let media;
         if (item["media:content"]) {
@@ -88,7 +101,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
           title: item.title ? `${emoji} ${item.title}` : `${emoji}`,
           url,
           description,
-          date: item.pubDate ? item.pubDate : item.date,
+          butts,
           guid: item.guid,
         };
         feed.item(newItem);
