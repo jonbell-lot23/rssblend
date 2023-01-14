@@ -78,11 +78,6 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
           description = description + mediaUrlWrapped;
         }
 
-        let date;
-        if ("date" in item) {
-          date: item.pubDate ? item.pubDate : item.date;
-        }
-
         // these are all pretty easy
         const url = item.link;
         const feedUrl = rssFeedUrls[index];
@@ -93,7 +88,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
           title: item.title ? `${emoji} ${item.title}` : `${emoji}`,
           url,
           description,
-          date,
+          date: item.pubDate ? item.pubDate : item.date,
           guid: item.guid,
         };
         feed.item(newItem);
