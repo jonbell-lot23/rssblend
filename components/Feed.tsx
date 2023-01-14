@@ -41,7 +41,7 @@ const Feed = () => {
       <link
         rel="alternate"
         type="application/rss+xml"
-        title="RSS"
+        title="Jon Bell's Firehose"
         href="http://firehose.lot23.com/api/feed"
       />
       <div className="mx-auto prose">
