@@ -54,72 +54,40 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
 
   const feedItems = await Promise.all(
     results.map(async (rssString, index) => {
-      let parser = new RssParser({
-        customFields: {
-          item: ["media", "media:content"],
-        },
-      });
-
+      const parser = new RssParser();
       const parsedFeed = await parser.parseString(rssString);
       parsedFeed.items.forEach((item) => {
-        // deal with description stuff
         let description;
         if ("content" in item) {
           description = item.content;
         } else if ("content:encoded" in item) {
           description = item["content:encoded"];
         }
-
-        // date work
-        let butts;
-
-        butts = null;
-
-        if ("date" in item) {
-          butts = item.pubDate;
-        }
-
-        if ("pubDate" in item) {
-          butts = item.pubDate;
-        }
-
-        // deal with media enclosures
-        let media;
-        if (item["media:content"]) {
-          let mediaUrl = item["media:content"].$.url;
-          const mediaUrlWrapped = "<p>" + "<img src=" + mediaUrl + ">" + "</p>";
-          description = description + mediaUrlWrapped;
-        }
-
-        // these are all pretty easy
         const url = item.link;
         const feedUrl = rssFeedUrls[index];
         const emoji = urlToEmoji[feedUrl];
 
-        // bundle it all together
         const newItem = {
           title: item.title ? `${emoji} ${item.title}` : `${emoji}`,
           url,
           description,
-          butts,
+          date: item.pubDate ? item.pubDate : item.date,
           guid: item.guid,
         };
         feed.item(newItem);
 
-        // console.log("-- ITEM --");
-        // console.log(item);
-        if (media) {
-          // console.log(newItem);
-          // console.log("%%%");
-        }
+        console.log("-- ITEM --");
+        console.log(item);
       });
     })
   );
 
   const xml = feed.xml();
 
-  // console.log("-- XML --");
-  // console.log(xml);
+  /*
+  console.log("-- XML --");
+  console.log(xml);
+  */
 
   res.setHeader("Content-Type", "application/xml");
   res.send(xml);
