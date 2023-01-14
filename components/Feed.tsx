@@ -6,15 +6,6 @@ const Feed = () => {
   const [feedData, setFeedData] = useState([]);
   const [isLoading, setIsLoading] = useState(true); // Add a state variable to keep track of loading status
 
-  const lottieDefaultOptions = {
-    loop: true,
-    autoplay: true,
-    animationData: fireLottie,
-    rendererSettings: {
-      preserveAspectRatio: "xMidYMid slice",
-    },
-  };
-
   useEffect(() => {
     setIsLoading(true);
     fetch("api/feed")
@@ -56,7 +47,7 @@ const Feed = () => {
         <div className="flex h-screen w-screen items-center justify-center">
           <div>
             <script src="https://unpkg.com/@lottiefiles/lottie-player@latest/dist/lottie-player.js"></script>
-            <Lottie options={lottieDefaultOptions} height={400} width={400} />
+            Loading Firehose...
           </div>
         </div>
       ) : (
