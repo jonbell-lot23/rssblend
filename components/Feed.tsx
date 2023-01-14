@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import Lottie from "react-lottie-react-with-react-17";
+import Lottie from "lottie-react";
 import * as fireLottie from "/components/fire.json";
 
 const Feed = () => {
