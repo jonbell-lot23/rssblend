@@ -1,9 +1,22 @@
 import React, { useEffect, useState } from "react";
+import Lottie from "react-lottie";
+import * as fireLottie from "/components/fire.json";
 
 const Feed = () => {
   const [feedData, setFeedData] = useState([]);
+  const [isLoading, setIsLoading] = useState(true); // Add a state variable to keep track of loading status
+
+  const lottieDefaultOptions = {
+    loop: true,
+    autoplay: true,
+    animationData: fireLottie,
+    rendererSettings: {
+      preserveAspectRatio: "xMidYMid slice",
+    },
+  };
 
   useEffect(() => {
+    setIsLoading(true);
     fetch("api/feed")
       .then((response) => response.text())
       .then((str) => {
@@ -33,43 +46,55 @@ const Feed = () => {
 
         console.log(feedData);
         setFeedData(feedData);
+        setIsLoading(false);
       });
   }, []);
 
   return (
     <>
-      <link
-        rel="alternate"
-        type="application/rss+xml"
-        title="Jon Bell's Firehose"
-        href="http://firehose.lot23.com/api/feed"
-      />
-      <div className="mx-auto prose">
-        <div className="py-4">
-          {feedData.slice(0, 25).map((item, index) => (
-            <>
-              <div key={index} className="p-4 mb-2">
-                <a
-                  href={item.link}
-                  className="text-pink-600 text-decoration-none text-truncate break-normal"
-                >
-                  {item.title.replace(/<[^>]+>/g, "").trim() ===
-                  item.description.replace(/<[^>]+>/g, "").trim()
-                    ? null
-                    : item.title}
-                </a>
-                <div
-                  className="text-gray-700"
-                  dangerouslySetInnerHTML={{ __html: item.description }}
-                />
-
-                <p className="text-gray-400">{item.date}</p>
-              </div>
-              <div className="border-t pb-6 w-1/2 mx-auto"></div>
-            </>
-          ))}
+      {isLoading ? (
+        <div className="flex h-screen w-screen items-center justify-center">
+          <div>
+            <script src="https://unpkg.com/@lottiefiles/lottie-player@latest/dist/lottie-player.js"></script>
+            <Lottie options={lottieDefaultOptions} height={400} width={400} />
+          </div>
         </div>
-      </div>
+      ) : (
+        <>
+          <link
+            rel="alternate"
+            type="application/rss+xml"
+            title="Jon Bell's Firehose"
+            href="http://firehose.lot23.com/api/feed"
+          />
+          <div className="mx-auto prose">
+            <div className="py-4">
+              {feedData.slice(0, 25).map((item, index) => (
+                <>
+                  <div key={index} className="p-4 mb-2">
+                    <a
+                      href={item.link}
+                      className="text-pink-600 text-decoration-none text-truncate break-normal"
+                    >
+                      {item.title.replace(/<[^>]+>/g, "").trim() ===
+                      item.description.replace(/<[^>]+>/g, "").trim()
+                        ? null
+                        : item.title}
+                    </a>
+                    <div
+                      className="text-gray-700"
+                      dangerouslySetInnerHTML={{ __html: item.description }}
+                    />
+
+                    <p className="text-gray-400">{item.date}</p>
+                  </div>
+                  <div className="border-t pb-6 w-1/2 mx-auto"></div>
+                </>
+              ))}
+            </div>
+          </div>
+        </>
+      )}
     </>
   );
 };
