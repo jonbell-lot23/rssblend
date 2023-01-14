@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import Lottie from "lottie-react";
 import fireLottie from "../components/fire.json";
+import moment from "moment";
 
 const Feed = () => {
   const [feedData, setFeedData] = useState([]);
@@ -69,19 +70,26 @@ const Feed = () => {
                   <div key={index} className="p-4 mb-2">
                     <a
                       href={item.link}
-                      className="text-pink-600 text-decoration-none text-truncate break-normal"
+                      className="text-pink-600 text-decoration-none text-truncate break-normal text-xl"
                     >
                       {item.title.replace(/<[^>]+>/g, "").trim() ===
                       item.description.replace(/<[^>]+>/g, "").trim()
                         ? null
                         : item.title}
                     </a>
-                    <div
-                      className="text-gray-700"
-                      dangerouslySetInnerHTML={{ __html: item.description }}
-                    />
 
-                    <p className="text-gray-400">{item.date}</p>
+                    <div className="ml-8 my-0">
+                      <div className="text-gray-400">
+                        <span className="align-right">
+                          {moment(item.date).fromNow()}
+                        </span>
+                      </div>
+
+                      <div
+                        className="text-gray-700"
+                        dangerouslySetInnerHTML={{ __html: item.description }}
+                      />
+                    </div>
                   </div>
                   <div className="border-t pb-6 w-1/2 mx-auto"></div>
                 </>
