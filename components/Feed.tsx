@@ -23,9 +23,16 @@ const Feed = () => {
         const items = data.querySelectorAll("item");
         // console.log(items);
         const feedData = Array.from(items).map((item) => {
-          console.log(item);
+          // console.log(item);
+
+          let titleObjectFull = item.querySelector("title").textContent;
+          const [precedingEmoji, ...titleObjectNoEmoji] =
+            titleObjectFull.split(" ");
+          titleObjectFull = titleObjectNoEmoji.join(" ");
+
           return {
-            title: item.querySelector("title").textContent,
+            title: titleObjectFull,
+            emoji: precedingEmoji,
             link: item.querySelector("link").textContent,
             description: item.querySelector("description").textContent,
             date:
@@ -67,28 +74,31 @@ const Feed = () => {
             <div className="py-4">
               {feedData.slice(0, 25).map((item, index) => (
                 <>
-                  <div key={index} className="p-4 mb-2">
-                    <a
-                      href={item.link}
-                      className="text-pink-600 text-decoration-none text-truncate break-normal text-xl"
-                    >
-                      {item.title.replace(/<[^>]+>/g, "").trim() ===
-                      item.description.replace(/<[^>]+>/g, "").trim()
-                        ? null
-                        : item.title}
-                    </a>
+                  <div key={index} className="p-4 mb-2 flex">
+                    <div className="mr-1">{item.emoji}</div>
+                    <div>
+                      <a
+                        href={item.link}
+                        className="text-pink-600 text-decoration-none text-truncate break-normal text-xl"
+                      >
+                        {item.title.replace(/<[^>]+>/g, "").trim() ===
+                        item.description.replace(/<[^>]+>/g, "").trim()
+                          ? item.title
+                          : item.title}
+                      </a>
 
-                    <div className="ml-8 my-0">
-                      <div className="text-gray-400">
-                        <span className="align-right">
-                          {moment(item.date).fromNow()}
-                        </span>
+                      <div className="my-0">
+                        <div className="text-gray-400">
+                          <span className="align-right">
+                            {moment(item.date).fromNow()}
+                          </span>
+                        </div>
+
+                        <div
+                          className="text-gray-700"
+                          dangerouslySetInnerHTML={{ __html: item.description }}
+                        />
                       </div>
-
-                      <div
-                        className="text-gray-700"
-                        dangerouslySetInnerHTML={{ __html: item.description }}
-                      />
                     </div>
                   </div>
                   <div className="border-t pb-6 w-1/2 mx-auto"></div>
