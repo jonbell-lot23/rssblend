@@ -79,7 +79,7 @@ const Feed = () => {
                     <div>
                       <a
                         href={item.link}
-                        className="text-[#E9496F] text-decoration-none text-truncate break-normal text-xl"
+                        className="text-[#E9496F] text-decoration-none text-truncate break-normal text-xl leading-none"
                       >
                         {item.title.replace(/<[^>]+>/g, "").trim() !==
                         item.description.replace(/<[^>]+>/g, "").trim()
