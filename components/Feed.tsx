@@ -75,23 +75,21 @@ const Feed = () => {
               {feedData.slice(0, 25).map((item, index) => (
                 <>
                   <div key={index} className="p-4 mb-2 flex">
-                    <div className="mr-1">{item.emoji}</div>
+                    <div className="mr-1">{item.emoji ? item.emoji : "❓"}</div>
                     <div>
                       <a
                         href={item.link}
                         className="text-pink-600 text-decoration-none text-truncate break-normal text-xl"
                       >
-                        {item.title.replace(/<[^>]+>/g, "").trim() ===
+                        {item.title.replace(/<[^>]+>/g, "").trim() !==
                         item.description.replace(/<[^>]+>/g, "").trim()
                           ? item.title
-                          : item.title}
+                          : null}
                       </a>
 
                       <div className="my-0">
-                        <div className="text-gray-400">
-                          <span className="align-right">
-                            {moment(item.date).fromNow()}
-                          </span>
+                        <div className="text-gray-400 leading-none">
+                          <span>{moment(item.date).fromNow()}</span>
                         </div>
 
                         <div
