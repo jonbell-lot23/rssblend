@@ -84,7 +84,7 @@ const Feed = () => {
                         {item.title.replace(/<[^>]+>/g, "").trim() !==
                         item.description.replace(/<[^>]+>/g, "").trim()
                           ? item.title
-                          : null}
+                          : "•"}
                       </a>
 
                       <div className="my-0">
