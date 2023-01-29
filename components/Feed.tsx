@@ -93,7 +93,7 @@ const Feed = () => {
                         </div>
 
                         <div
-                          className="text-gray-700"
+                          className="text-gray-700 overflow-wrap: break-word;"
                           dangerouslySetInnerHTML={{ __html: item.description }}
                         />
                       </div>
