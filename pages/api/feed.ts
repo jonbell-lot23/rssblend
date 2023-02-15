@@ -31,6 +31,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
 
   const rssFeedUrls = [
     "https://flickr.com/services/feeds/photos_public.gne?id=36521984990@N01&lang=en-us&format=atom",
+    "https://picadilly.vercel.app/api/rss",
     "https://jonb.tumblr.com/rss",
     "https://medium.com/feed/@jonbell",
     "https://a-blog-about-jon-bell.ghost.io/fullrss/",
@@ -42,7 +43,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
   ];
 
   /*
-  "https://picadilly.vercel.app/api/rss",
+  
   "https://www.flickr.com/services/feeds/photos_public.gne?id=36521984990@N01&lang=en-us&format=rss",
   */
 
