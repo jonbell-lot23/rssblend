@@ -47,41 +47,46 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
   "https://www.flickr.com/services/feeds/photos_public.gne?id=36521984990@N01&lang=en-us&format=rss",
   */
 
-  const feedPromises = rssFeedUrls.map((url) =>
-    fetch(url).then((res) => res.text())
-  );
+ const feedPromises = rssFeedUrls.map((url) =>
+   fetch(url).then((res) => res.text())
+ );
+ 
+ const results = await Promise.all(feedPromises);
+ 
+ const feedItems = await Promise.all(
+   results.map(async (rssString, index) => {
+     const parser = new RssParser();
+     try {
+       const parsedFeed = await parser.parseString(rssString);
+       parsedFeed.items.forEach((item) => {
+         let description;
+         if ("content" in item) {
+           description = item.content;
+         } else if ("content:encoded" in item) {
+           description = item["content:encoded"];
+         }
+         const url = item.link;
+         const feedUrl = rssFeedUrls[index];
+         const emoji = urlToEmoji[feedUrl];
+ 
+         const newItem = {
+           title: item.title ? `${emoji} ${item.title}` : `${emoji} •`,
+           url,
+           description,
+           date: item.pubDate ? item.pubDate : item.date,
+           guid: item.guid,
+         };
+         feed.item(newItem);
+ 
+         console.log("-- ITEM --");
+         console.log(item);
+       });
+     } catch (err) {
+       console.error("Error parsing RSS feed:", err.message);
+     }
+   })
+ );
 
-  const results = await Promise.all(feedPromises);
-
-  const feedItems = await Promise.all(
-    results.map(async (rssString, index) => {
-      const parser = new RssParser();
-      const parsedFeed = await parser.parseString(rssString);
-      parsedFeed.items.forEach((item) => {
-        let description;
-        if ("content" in item) {
-          description = item.content;
-        } else if ("content:encoded" in item) {
-          description = item["content:encoded"];
-        }
-        const url = item.link;
-        const feedUrl = rssFeedUrls[index];
-        const emoji = urlToEmoji[feedUrl];
-
-        const newItem = {
-          title: item.title ? `${emoji} ${item.title}` : `${emoji} •`,
-          url,
-          description,
-          date: item.pubDate ? item.pubDate : item.date,
-          guid: item.guid,
-        };
-        feed.item(newItem);
-
-        console.log("-- ITEM --");
-        console.log(item);
-      });
-    })
-  );
 
   const xml = feed.xml();
 
