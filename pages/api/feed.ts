@@ -6,7 +6,7 @@ import RssParser from "rss-parser";
 const urlToEmoji = {
   "https://jonb.tumblr.com/rss": "💻",
   "https://medium.com/feed/@jonbell": "📝",
-  "https://a-blog-about-jon-bell.ghost.io/fullrss/": "💬",
+  "https://a-blog-about-jon-bell.ghost.io/rss/": "💬",
   "https://jbell.status.lol/feed": "⬜️",
   "https://mastodon.nz/@jon.rss": "🐘",
   "https://www.lexaloffle.com/bbs/feed.php?uid=17302": "👾",
@@ -34,7 +34,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
     "https://picadilly.vercel.app/api/rss",
     "https://jonb.tumblr.com/rss",
     "https://medium.com/feed/@jonbell",
-    "https://a-blog-about-jon-bell.ghost.io/fullrss/",
+    "https://a-blog-about-jon-bell.ghost.io/rss/",
     "https://jbell.status.lol/feed",
     "https://mastodon.nz/@jon.rss",
     "https://www.lexaloffle.com/bbs/feed.php?uid=17302",
