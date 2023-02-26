@@ -60,10 +60,10 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
        const parsedFeed = await parser.parseString(rssString);
        parsedFeed.items.forEach((item) => {
          let description;
-         if ("content" in item) {
-           description = item.content;
-         } else if ("content:encoded" in item) {
+         if ("content:encoded" in item) {
            description = item["content:encoded"];
+         } else if ("content" in item) {
+           description = item.content;
          }
          const url = item.link;
          const feedUrl = rssFeedUrls[index];
