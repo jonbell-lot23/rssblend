@@ -1,10 +1,21 @@
 import Head from "next/head";
 import React from "react";
-require("dotenv").config();
-const mysql = require("mysql2");
-const connection = mysql.createConnection(process.env.DATABASE_URL);
-console.log("Connected to PlanetScale!");
-connection.end();
+
+const { PrismaClient } = require("@prisma/client");
+const prisma = new PrismaClient();
+
+async function main() {
+  const post = await prisma.post.findMany();
+  console.log(post);
+}
+
+main()
+  .catch((e) => {
+    throw e;
+  })
+  .finally(async () => {
+    await prisma.$disconnect();
+  });
 
 const Home = () => {
   return (
