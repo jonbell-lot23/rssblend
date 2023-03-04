@@ -1,6 +1,10 @@
 import Head from "next/head";
 import React from "react";
-import Feed from "../components/Feed";
+require("dotenv").config();
+const mysql = require("mysql2");
+const connection = mysql.createConnection(process.env.DATABASE_URL);
+console.log("Connected to PlanetScale!");
+connection.end();
 
 const Home = () => {
   return (
