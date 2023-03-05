@@ -1,6 +1,23 @@
 import Head from "next/head";
 import React from "react";
 import Feed from "../components/Feed";
+import prisma from "../lib/prisma";
+import { GetStaticProps } from "next";
+
+export const getStaticProps: GetStaticProps = async () => {
+  const feed = await prisma.post.findMany({
+    include: {
+      author: {
+        select: { name: true },
+      },
+    },
+  });
+  return {
+    props: { feed },
+    revalidate: 10,
+  };
+  console.log(feed);
+};
 
 const Home = () => {
   return (
@@ -17,13 +34,9 @@ const Home = () => {
 
       <header className="bg-[#E9496F] text-white top-0 left-0 w-full z-10">
         <div className="container mx-auto px-6 py-3 shadow-b-md">
-          <h1 className="text-xl font-medium text-center">
-            Jon Bell's Firehose
-          </h1>
+          <h1 className="text-xl font-medium text-center">Testing...</h1>
         </div>
       </header>
-
-      <Feed />
     </div>
   );
 };
