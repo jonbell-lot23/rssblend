@@ -34,7 +34,9 @@ const Feed = () => {
             title: titleObjectFull,
             emoji: precedingEmoji,
             link: item.querySelector("link").textContent,
-            description: item.querySelector("description").textContent,
+            description:
+              item.querySelector("description")?.textContent ||
+              "(no description)",
             date:
               item.querySelector("pubDate")?.textContent ||
               (item.querySelector("date")
