@@ -6,7 +6,7 @@ import { PrismaClient, Post } from "@prisma/client";
 const prisma = new PrismaClient();
 
 export const getStaticProps: GetStaticProps = async () => {
-  console.log("Fetching posts...");
+  console.log("Fetching posts!");
   const posts = await prisma.post.findMany();
   console.log("Posts:", posts);
 
