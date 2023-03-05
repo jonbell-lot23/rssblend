@@ -4,11 +4,11 @@ import prisma from "../../lib/prisma";
 import { GetServerSideProps } from "next";
 
 export const getServerSideProps: GetServerSideProps = async ({ params }) => {
-  const postId = parseInt(params?.id as string, 10) as number;
+  const postId = parseInt(params?.id as string, 10);
 
   const post = await prisma.post.findUnique({
     where: {
-      id: postId,
+      id: postId.toString(),
     },
   });
 
