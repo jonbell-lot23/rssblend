@@ -3,6 +3,8 @@ import React from "react";
 import prisma from "../lib/prisma";
 import { GetStaticProps } from "next";
 
+import { PrismaClient, Post } from "@prisma/client";
+
 export const getStaticProps: GetStaticProps = async () => {
   console.log("Fetching posts...");
   const posts = await prisma.post.findMany();
@@ -16,7 +18,7 @@ export const getStaticProps: GetStaticProps = async () => {
   };
 };
 
-const Home = ({ posts }) => {
+const Home = ({ posts }: { posts: Post[] }) => {
   console.log("Posts prop:", posts);
 
   return (
@@ -28,7 +30,6 @@ const Home = ({ posts }) => {
         <div key={post.id}>
           <h2>{post.title}</h2>
           <p>{post.content}</p>
-          <p>Author: {post.author?.name || "Unknown"}</p>
         </div>
       ))}
     </div>
