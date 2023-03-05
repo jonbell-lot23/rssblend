@@ -1,42 +1,36 @@
 import Head from "next/head";
 import React from "react";
-import Feed from "../components/Feed";
 import prisma from "../lib/prisma";
 import { GetStaticProps } from "next";
 
 export const getStaticProps: GetStaticProps = async () => {
-  const feed = await prisma.post.findMany({
-    include: {
-      author: {
-        select: { name: true },
-      },
-    },
-  });
+  console.log("Fetching posts...");
+  const posts = await prisma.post.findMany();
+  console.log("Posts:", posts);
+
   return {
-    props: { feed },
+    props: {
+      posts,
+    },
     revalidate: 10,
   };
-  console.log(feed);
 };
 
-const Home = () => {
+const Home = ({ posts }) => {
+  console.log("Posts prop:", posts);
+
   return (
     <div>
       <Head>
-        <script
-          defer
-          data-domain="firehose.lot23.com"
-          src="https://plausible.io/js/script.js"
-        ></script>
-        <title>Firehose!</title>
-        <link rel="icon" href="/favicon.ico" />
+        <title>My Blog</title>
       </Head>
-
-      <header className="bg-[#E9496F] text-white top-0 left-0 w-full z-10">
-        <div className="container mx-auto px-6 py-3 shadow-b-md">
-          <h1 className="text-xl font-medium text-center">Testing...</h1>
+      {posts.map((post) => (
+        <div key={post.id}>
+          <h2>{post.title}</h2>
+          <p>{post.content}</p>
+          <p>Author: {post.author?.name || "Unknown"}</p>
         </div>
-      </header>
+      ))}
     </div>
   );
 };

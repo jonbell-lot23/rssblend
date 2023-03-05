@@ -5,23 +5,29 @@ import { GetServerSideProps } from "next";
 
 export const getServerSideProps: GetServerSideProps = async ({ params }) => {
   const postId = parseInt(params?.id as string, 10);
+
   const post = await prisma.post.findUnique({
     where: {
       id: postId,
-    },
-    include: {
-      author: {
-        select: { name: true },
-      },
     },
   });
   return {
     props: post,
   };
+
+  console.log(postId);
+  console.log(post);
 };
 
-const Home = () => {
-  return <p>hi</p>;
+const Home = ({ post }) => {
+  return (
+    <div>
+      <Head>
+        <title>Author {post?.author}</title>
+      </Head>
+      <p>Content {post?.content}</p>
+    </div>
+  );
 };
 
 export default Home;
