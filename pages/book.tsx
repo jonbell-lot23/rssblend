@@ -1,9 +1,9 @@
 import Head from "next/head";
 import React from "react";
-import prisma from "../lib/prisma";
 import { GetStaticProps } from "next";
 
 import { PrismaClient, Post } from "@prisma/client";
+const prisma = new PrismaClient();
 
 export const getStaticProps: GetStaticProps = async () => {
   console.log("Fetching posts...");
@@ -14,7 +14,7 @@ export const getStaticProps: GetStaticProps = async () => {
     props: {
       posts,
     },
-    revalidate: 9,
+    revalidate: 10,
   };
 };
 
