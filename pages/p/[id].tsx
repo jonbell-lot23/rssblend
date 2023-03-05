@@ -3,12 +3,20 @@ import React from "react";
 import prisma from "../../lib/prisma";
 import { GetServerSideProps } from "next";
 
-export const getServerSideProps = async () => {
-  const posts = await prisma.post.findMany();
-  return {
-    props: {
-      posts,
+export const getServerSideProps: GetServerSideProps = async ({ params }) => {
+  const postId = parseInt(params?.id as string, 10);
+
+  const post = await prisma.post.findUnique({
+    where: {
+      id: postId.toString(),
     },
+  });
+
+  console.log(postId);
+  console.log(post);
+
+  return {
+    props: { post },
   };
 };
 
@@ -16,7 +24,7 @@ const Home = ({ post }) => {
   return (
     <div>
       <Head>
-        <title>Author {post?.author}</title>
+        <title>Woooo</title>
       </Head>
       <p>Content {post?.content}</p>
     </div>
