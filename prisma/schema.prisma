@@ -7,59 +7,29 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model Post {
-  id        String  @id @default(cuid())
-  title     String
-  content   String?
-  published Boolean @default(false)
-  authorId  String?
-  author    User?   @relation(fields: [authorId], references: [id])
+model bouquet {
+  id                   String                 @id
+  date                 String?
+  name                 String?
+  detail               String?
+  url                  String?
+  username             String?
+  bouquet_emoji_lookup bouquet_emoji_lookup[]
 }
 
-model Account {
-  id                 String  @id @default(cuid())
-  userId             String  @map("user_id")
-  type               String
-  provider           String
-  providerAccountId  String  @map("provider_account_id")
-  refresh_token      String?
-  access_token       String?
-  expires_at         Int?
-  token_type         String?
-  scope              String?
-  id_token           String?
-  session_state      String?
-  oauth_token_secret String?
-  oauth_token        String?
-  user               User    @relation(fields: [userId], references: [id], onDelete: Cascade)
-
-  @@unique([provider, providerAccountId])
+model bouquet2023 {
+  date        String?
+  description String?
+  url         String?
+  username    String?
+  id          Int     @id @default(autoincrement())
+  emoji       String?
 }
 
-model Session {
-  id           String   @id @default(cuid())
-  sessionToken String   @unique @map("session_token")
-  userId       String   @map("user_id")
-  expires      DateTime
-  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
-}
-
-model User {
-  id            String    @id @default(cuid())
-  email         String?   @unique
-  name          String?
-  emailVerified DateTime?
-  image         String?
-  accounts      Account[]
-  posts         Post[]
-  sessions      Session[]
-}
-
-model VerificationToken {
-  id         Int      @id @default(autoincrement())
-  identifier String
-  token      String   @unique
-  expires    DateTime
-
-  @@unique([identifier, token])
+model bouquet_emoji_lookup {
+  id        BigInt   @id @default(autoincrement())
+  name      String?  @db.VarChar
+  emoji     String?  @db.VarChar
+  bouquetId String?
+  bouquet   bouquet? @relation(fields: [bouquetId], references: [id])
 }
