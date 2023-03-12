@@ -33,3 +33,11 @@ model bouquet_emoji_lookup {
   bouquetId String?
   bouquet   bouquet? @relation(fields: [bouquetId], references: [id])
 }
+
+model firehose_Items {
+  id          Int      @id @default(autoincrement())
+  title       String
+  url         String   @unique
+  description String?
+  postdate    DateTime
+}

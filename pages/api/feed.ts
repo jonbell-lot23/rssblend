@@ -2,6 +2,7 @@ import { NextApiRequest, NextApiResponse } from "next";
 import rss from "rss";
 import fetch from "node-fetch";
 import RssParser from "rss-parser";
+import { PrismaClient } from "@prisma/client";
 
 const urlToEmoji = {
   "https://jonb.tumblr.com/rss": "💻",
@@ -17,10 +18,7 @@ const urlToEmoji = {
     "🌏",
 };
 
-/*
-"https://www.flickr.com/services/feeds/photos_public.gne?id=36521984990@N01&lang=en-us&format=rss": "🏞️",
-"https://picadilly.vercel.app/api/rss": "🌅",
-*/
+const prisma = new PrismaClient();
 
 export default async (req: NextApiRequest, res: NextApiResponse) => {
   const feed = new rss({
@@ -42,59 +40,99 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
     "https://feeds.pinboard.in/rss/secret:9951275a502175fe617d/u:JonB/t:toshare/",
   ];
 
-  /*
-  
-  "https://www.flickr.com/services/feeds/photos_public.gne?id=36521984990@N01&lang=en-us&format=rss",
-  */
+  const feedPromises = rssFeedUrls.map((url) =>
+    fetch(url).then((res) => res.text())
+  );
 
- const feedPromises = rssFeedUrls.map((url) =>
-   fetch(url).then((res) => res.text())
- );
- 
- const results = await Promise.all(feedPromises);
- 
- const feedItems = await Promise.all(
-   results.map(async (rssString, index) => {
-     const parser = new RssParser();
-     try {
-       const parsedFeed = await parser.parseString(rssString);
-       parsedFeed.items.forEach((item) => {
-         let description;
-         if ("content:encoded" in item) {
-           description = item["content:encoded"];
-         } else if ("content" in item) {
-           description = item.content;
-         }
-         const url = item.link;
-         const feedUrl = rssFeedUrls[index];
-         const emoji = urlToEmoji[feedUrl];
- 
-         const newItem = {
-           title: item.title ? `${emoji} ${item.title}` : `${emoji} •`,
-           url,
-           description,
-           date: item.pubDate ? item.pubDate : item.date,
-           guid: item.guid,
-         };
-         feed.item(newItem);
- 
-         console.log("-- ITEM --");
-         console.log(item);
-       });
-     } catch (err) {
-       console.error("Error parsing RSS feed:", err.message);
-     }
-   })
- );
+  const results = await Promise.all(feedPromises);
 
+  const feedItems = await Promise.all(
+    results.map(async (rssString, index) => {
+      const parser = new RssParser();
+      try {
+        const parsedFeed = await parser.parseString(rssString);
+        parsedFeed.items.forEach((item) => {
+          let description;
+          if ("content:encoded" in item) {
+            description = item["content:encoded"];
+          } else if ("content" in item) {
+            description = item.content;
+          }
+          const url = item.link;
+          const feedUrl = rssFeedUrls[index];
+          const emoji = urlToEmoji[feedUrl];
 
-  const xml = feed.xml();
+          const newItem = {
+            title: item.title ? `${emoji} ${item.title}` : `${emoji} •`,
+            url,
+            description,
+            date: item.pubDate ? item.pubDate : item.date,
+            guid: item.guid,
+          };
+          feed.item(newItem);
 
-  /*
-  console.log("-- XML --");
-  console.log(xml);
-  */
+          console.log("-- ITEM --");
+          console.log(item);
+        });
+      } catch (err) {
+        console.error("Error parsing RSS feed:", err.message);
+      }
+    })
+  );
 
-  res.setHeader("Content-Type", "application/xml");
-  res.send(xml);
+  await Promise.all(
+    results.map(async (rssString, index) => {
+      const parser = new RssParser();
+      try {
+        const parsedFeed = await parser.parseString(rssString);
+
+        await Promise.all(
+          parsedFeed.items.map(async (item) => {
+            // Check if item exists in database
+            const existingItem = await prisma.firehose_Items.findUnique({
+              where: { url: item.link },
+            });
+
+            if (!existingItem) {
+              // Item not in database, add it
+              const description = item["content:encoded"] || item.content;
+              const url = item.link;
+              const feedUrl = rssFeedUrls[index];
+              const emoji = urlToEmoji[feedUrl];
+
+              const newItem = await prisma.firehose_Items.create({
+                data: {
+                  title: item.title ? `${emoji} ${item.title}` : `${emoji} •`,
+                  url,
+                  description,
+                  postdate: new Date(item.pubDate || item.date), // Parse the date string
+                },
+              });
+
+              // Add item to RSS feed
+              feed.item({
+                title: newItem.title,
+                url: newItem.url,
+                description: newItem.description,
+                date: newItem.postdate,
+              });
+            } else {
+              // Add item to RSS feed using existing item's properties
+              feed.item({
+                title: existingItem.title,
+                url: existingItem.url,
+                description: existingItem.description,
+                date: existingItem.postdate,
+              });
+            }
+          })
+        );
+      } catch (err) {
+        console.error(`Error processing feed: ${err}`);
+      }
+    })
+  );
+
+  res.setHeader("Content-Type", "application/rss+xml");
+  res.send(feed.xml());
 };
