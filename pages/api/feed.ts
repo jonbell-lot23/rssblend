@@ -93,7 +93,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
         const parsedFeed = await parser.parseString(rssString);
 
         await Promise.all(
-          parsedFeed.items.map(async (item) => {
+          parsedFeed.items.slice(0, 15).map(async (item) => {
             // Check if item exists in database
             const existingItem = await prisma.firehose_Items.findUnique({
               where: { url: item.link },
