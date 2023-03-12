@@ -40,4 +40,5 @@ model firehose_Items {
   url         String   @unique
   description String?
   postdate    DateTime
+  source      String?
 }

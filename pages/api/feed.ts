@@ -18,6 +18,9 @@ const urlToEmoji = {
     "🌏",
 };
 
+/* 
+"http://me.dm/@jbell.rss": "🐘", */
+
 const prisma = new PrismaClient();
 
 export default async (req: NextApiRequest, res: NextApiResponse) => {
@@ -35,10 +38,13 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
     "https://a-blog-about-jon-bell.ghost.io/rss/",
     "https://jbell.status.lol/feed",
     "https://mastodon.nz/@jon.rss",
+
     "https://www.lexaloffle.com/bbs/feed.php?uid=17302",
     "https://jonbell.micro.blog/feed.xml",
     "https://feeds.pinboard.in/rss/secret:9951275a502175fe617d/u:JonB/t:toshare/",
   ];
+
+  /* "http://me.dm/@jbell.rss", */
 
   const feedPromises = rssFeedUrls.map((url) =>
     fetch(url).then((res) => res.text())
@@ -102,10 +108,11 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
 
               const newItem = await prisma.firehose_Items.create({
                 data: {
-                  title: item.title ? `${emoji} ${item.title}` : `${emoji} •`,
+                  title: item.title ? item.title : "•",
+                  source: emoji,
                   url,
                   description,
-                  postdate: new Date(item.pubDate || item.date), // Parse the date string
+                  postdate: new Date(item.pubDate || item.date),
                 },
               });
 
@@ -118,12 +125,6 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
               });
             } else {
               // Add item to RSS feed using existing item's properties
-              feed.item({
-                title: existingItem.title,
-                url: existingItem.url,
-                description: existingItem.description,
-                date: existingItem.postdate,
-              });
             }
           })
         );
