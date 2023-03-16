@@ -68,7 +68,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
           const emoji = urlToEmoji[feedUrl];
 
           if (emoji === "🌏") {
-            description += "\n\nLink: " + url;
+            description += "<p><a href='" + url + "'>Link</p>";
           }
 
           const newItem = {
