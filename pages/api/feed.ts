@@ -38,7 +38,6 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
     "https://a-blog-about-jon-bell.ghost.io/rss/",
     "https://jbell.status.lol/feed",
     "https://mastodon.nz/@jon.rss",
-
     "https://www.lexaloffle.com/bbs/feed.php?uid=17302",
     "https://jonbell.micro.blog/feed.xml",
     "https://feeds.pinboard.in/rss/secret:9951275a502175fe617d/u:JonB/t:toshare/",
@@ -67,6 +66,10 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
           const url = item.link;
           const feedUrl = rssFeedUrls[index];
           const emoji = urlToEmoji[feedUrl];
+
+          if (emoji === "🌏") {
+            description += "\n\nLink: " + url;
+          }
 
           const newItem = {
             title: item.title ? `${emoji} ${item.title}` : `${emoji} •`,
