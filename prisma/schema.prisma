@@ -18,11 +18,11 @@ model bouquet {
 }
 
 model bouquet2023 {
-  date        String?
+  date        DateTime? @db.Timestamptz(6)
   description String?
   url         String?
   username    String?
-  id          Int     @id @default(autoincrement())
+  id          Int       @id @default(autoincrement())
   emoji       String?
 }
 
@@ -41,4 +41,11 @@ model firehose_Items {
   description String?
   postdate    DateTime
   source      String?
+}
+
+model academia {
+  id         Int       @id @default(autoincrement())
+  created_at DateTime? @default(now()) @db.Timestamptz(6)
+  title      String?
+  body       String?
 }
