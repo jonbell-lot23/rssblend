@@ -131,7 +131,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
                 title: newItem.title,
                 url: newItem.url,
                 description: newItem.description,
-                date: newItem.postdate,
+                date: newItem.date,
               });
             } else {
               // Add item to RSS feed using existing item's properties
