@@ -7,6 +7,7 @@ import { PrismaClient } from "@prisma/client";
 const urlToEmoji = {
   "https://bouquet.lot23.com/api/rss?user=jon": "💐",
   "http://academia.lot23.com/api/feed": "🎓",
+  "http://me.dm/@jbell.rss": "🐘",
   "https://medium.com/feed/@jonbell": "📝",
   "https://a-blog-about-jon-bell.ghost.io/rss/": "💬",
   "https://jbell.status.lol/feed": "⬜️",
@@ -41,6 +42,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
     "https://a-blog-about-jon-bell.ghost.io/rss/",
     "https://jbell.status.lol/feed",
     "https://mastodon.nz/@jon.rss",
+    "http://me.dm/@jbell.rss",
     "https://www.lexaloffle.com/bbs/feed.php?uid=17302",
     "https://jonbell.micro.blog/feed.xml",
     "https://feeds.pinboard.in/rss/secret:9951275a502175fe617d/u:JonB/t:toshare/",
@@ -112,15 +114,17 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
               const feedUrl = rssFeedUrls[index];
               const emoji = urlToEmoji[feedUrl];
 
-              const newItem = await prisma.firehose_Items.create({
-                data: {
-                  title: item.title ? item.title : "•",
-                  source: emoji,
-                  url,
-                  description,
-                  postdate: new Date(item.pubDate || item.date),
-                },
-              });
+              const newItem = {
+                title: item.title
+                  ? item.title.trim() === description.trim()
+                    ? ""
+                    : `${emoji} ${item.title}`
+                  : `${emoji} •`,
+                url,
+                description,
+                date: item.pubDate ? item.pubDate : item.date,
+                guid: item.guid,
+              };
 
               // Add item to RSS feed
               feed.item({
