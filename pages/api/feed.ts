@@ -21,9 +21,6 @@ const urlToEmoji = {
     "🌏",
 };
 
-/* 
-"http://me.dm/@jbell.rss": "🐘", */
-
 const prisma = new PrismaClient();
 
 export default async (req: NextApiRequest, res: NextApiResponse) => {
