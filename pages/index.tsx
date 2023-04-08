@@ -22,7 +22,6 @@ const Home = () => {
           </h1>
         </div>
       </header>
-
       <Feed />
     </div>
   );

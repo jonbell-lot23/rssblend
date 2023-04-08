@@ -83,10 +83,6 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
             date: item.pubDate ? item.pubDate : item.date,
             guid: item.guid,
           };
-          feed.item(newItem);
-
-          console.log("-- ITEM --");
-          console.log(item);
         });
       } catch (err) {
         console.error("Error parsing RSS feed:", err.message);

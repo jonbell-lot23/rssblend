@@ -75,7 +75,7 @@ const Feed = () => {
           <div className="mx-auto prose">
             <div className="py-4">
               {feedData.slice(0, 25).map((item, index) => (
-                <>
+                <React.Fragment key={index}>
                   <div key={index} className="p-4 mb-2 flex">
                     <div className="mr-1">{item.emoji ? item.emoji : "❓"}</div>
                     <div>
@@ -102,7 +102,7 @@ const Feed = () => {
                     </div>
                   </div>
                   <div className="border-t pb-6 w-1/2 mx-auto"></div>
-                </>
+                </React.Fragment>
               ))}
             </div>
           </div>
