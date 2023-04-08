@@ -12,6 +12,7 @@ const urlToEmoji = {
   "https://a-blog-about-jon-bell.ghost.io/rss/": "💬",
   "https://jbell.status.lol/feed": "⬜️",
   "https://mastodon.nz/@jon.rss": "🐘",
+  "https://jonb.tumblr.com/rss": "💻",
   "https://www.lexaloffle.com/bbs/feed.php?uid=17302": "👾",
   "https://flickr.com/services/feeds/photos_public.gne?id=36521984990@N01&lang=en-us&format=atom":
     "🏞️",
