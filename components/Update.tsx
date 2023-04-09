@@ -112,4 +112,4 @@ const Feed = () => {
   );
 };
 
-export default Update;
+export default Feed;
