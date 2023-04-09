@@ -13,18 +13,41 @@ const Feed = () => {
 
   useEffect(() => {
     setIsLoading(true);
-    fetch("api/getFeedData")
-      .then((response) => response.json())
-      .then((data) => {
-        const feedData = data.map((item) => {
+    fetch("api/feed")
+      .then((response) => response.text())
+      .then((str) => {
+        // parse the XML
+        const parser = new DOMParser();
+        const data = parser.parseFromString(str, "application/xml");
+        // extract the RSS items
+        const items = data.querySelectorAll("item");
+        // console.log(items);
+        const feedData = Array.from(items).map((item) => {
+          // console.log(item);
+
+          let titleObjectFull = item.querySelector("title").textContent;
+          const [precedingEmoji, ...titleObjectNoEmoji] =
+            titleObjectFull.split(" ");
+          titleObjectFull = titleObjectNoEmoji.join(" ");
+
           return {
-            title: item.title,
-            emoji: item.source,
-            link: item.url,
-            description: item.description,
-            date: item.postdate,
+            title: titleObjectFull,
+            emoji: precedingEmoji,
+            link: item.querySelector("link").textContent,
+            description:
+              item.querySelector("description")?.textContent ||
+              "(no description)",
+            date:
+              item.querySelector("pubDate")?.textContent ||
+              (item.querySelector("date")
+                ? item.querySelector("date").textContent
+                : "(no date)"),
           };
         });
+
+        feedData.sort(
+          (a, b) => new Date(b.date).getTime() - new Date(a.date).getTime()
+        );
 
         console.log(feedData);
         setFeedData(feedData);
@@ -89,4 +112,4 @@ const Feed = () => {
   );
 };
 
-export default Feed;
+export default Update;
