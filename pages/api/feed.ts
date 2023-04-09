@@ -108,7 +108,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
               const feedUrl = rssFeedUrls[index];
               const emoji = urlToEmoji[feedUrl];
 
-              const newItem = {
+              const newItemData = {
                 title: item.title
                   ? item.title.trim() === description.trim()
                     ? ""
@@ -120,12 +120,22 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
                 guid: item.guid,
               };
 
+              const newItem = await prisma.firehose_Items.create({
+                data: {
+                  title: newItemData.title,
+                  source: emoji,
+                  url: newItemData.url,
+                  description: newItemData.description,
+                  postdate: new Date(newItemData.date),
+                },
+              });
+
               // Add item to RSS feed
               feed.item({
-                title: newItem.title,
-                url: newItem.url,
-                description: newItem.description,
-                date: newItem.date,
+                title: newItemData.title,
+                url: newItemData.url,
+                description: newItemData.description,
+                date: newItemData.date,
               });
             } else {
               // Add item to RSS feed using existing item's properties
