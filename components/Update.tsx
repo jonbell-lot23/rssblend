@@ -13,7 +13,7 @@ const Feed = () => {
 
   useEffect(() => {
     setIsLoading(true);
-    fetch("api/feed")
+    fetch("api/update")
       .then((response) => response.text())
       .then((str) => {
         // parse the XML
