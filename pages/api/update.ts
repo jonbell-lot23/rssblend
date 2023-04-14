@@ -6,7 +6,7 @@ import { PrismaClient } from "@prisma/client";
 
 const urlToEmoji = {
   "https://bouquet.lot23.com/api/rss?user=jon": "💐",
-  "http://academia.lot23.com/api/feed": "🎓",
+  // "http://academia.lot23.com/api/feed": "🎓",
   "http://me.dm/@jbell.rss": "🐘",
   "https://medium.com/feed/@jonbell": "📝",
   "https://a-blog-about-jon-bell.ghost.io/rss/": "💬",
@@ -32,7 +32,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
 
   const rssFeedUrls = [
     "https://bouquet.lot23.com/api/rss?user=jon",
-    "http://academia.lot23.com/api/feed",
+    // "http://academia.lot23.com/api/feed",
     "https://flickr.com/services/feeds/photos_public.gne?id=36521984990@N01&lang=en-us&format=atom",
     "https://picadilly.vercel.app/api/rss",
     "https://jonb.tumblr.com/rss",
