@@ -112,7 +112,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
                 title: item.title
                   ? item.title.trim() === description.trim()
                     ? ""
-                    : `${emoji} ${item.title}`
+                    : `${item.title}`
                   : `${emoji} •`,
                 url,
                 description,
