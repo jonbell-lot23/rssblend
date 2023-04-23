@@ -6,7 +6,7 @@ import { PrismaClient } from "@prisma/client";
 
 const urlToEmoji = {
   "https://bouquet.lot23.com/api/rss?user=jon": "💐",
-  // "http://academia.lot23.com/api/feed": "🎓",
+  "http://academia.lot23.com/api/feed": "🎓",
   "http://me.dm/@jbell.rss": "🐘",
   "https://medium.com/feed/@jonbell": "📝",
   "https://a-blog-about-jon-bell.ghost.io/rss/": "💬",
@@ -32,7 +32,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
 
   const rssFeedUrls = [
     "https://bouquet.lot23.com/api/rss?user=jon",
-    // "http://academia.lot23.com/api/feed",
+    "http://academia.lot23.com/api/feed",
     "https://flickr.com/services/feeds/photos_public.gne?id=36521984990@N01&lang=en-us&format=atom",
     "https://picadilly.vercel.app/api/rss",
     "https://jonb.tumblr.com/rss",
@@ -46,8 +46,6 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
     "https://feeds.pinboard.in/rss/secret:9951275a502175fe617d/u:JonB/t:toshare/",
   ];
 
-  /* "http://me.dm/@jbell.rss", */
-
   const feedPromises = rssFeedUrls.map((url) =>
     fetch(url).then((res) => res.text())
   );
@@ -59,91 +57,74 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
       const parser = new RssParser();
       try {
         const parsedFeed = await parser.parseString(rssString);
-        parsedFeed.items.forEach((item) => {
-          let description;
-          if ("content:encoded" in item) {
-            description = item["content:encoded"];
-          } else if ("content" in item) {
-            description = item.content;
-          }
-          const url = item.link;
-          const feedUrl = rssFeedUrls[index];
-          const emoji = urlToEmoji[feedUrl];
 
-          if (emoji === "🌏") {
-            description += "<p><a href='" + url + "'>Link</p>";
-          }
-
-          const newItem = {
-            title: item.title ? `${emoji} ${item.title}` : `${emoji} •`,
-            url,
-            description,
-            date: item.pubDate ? item.pubDate : item.date,
-            guid: item.guid,
-          };
-        });
-      } catch (err) {
-        console.error("Error parsing RSS feed:", err.message);
-      }
-    })
-  );
-
-  await Promise.all(
-    results.map(async (rssString, index) => {
-      const parser = new RssParser();
-      try {
-        const parsedFeed = await parser.parseString(rssString);
+        console.log(`Processing feed ${index}: ${rssFeedUrls[index]}`);
 
         await Promise.all(
           parsedFeed.items.slice(0, 15).map(async (item) => {
-            // Check if item exists in database
-            const existingItem = await prisma.firehose_Items.findUnique({
-              where: { url: item.link },
-            });
-
-            if (!existingItem) {
-              // Item not in database, add it
-              const description = item["content:encoded"] || item.content;
-              const url = item.link;
-              const feedUrl = rssFeedUrls[index];
-              const emoji = urlToEmoji[feedUrl];
-
-              const newItemData = {
-                title: item.title
-                  ? item.title.trim() === description.trim()
-                    ? ""
-                    : `${item.title}`
-                  : `${emoji} •`,
-                url,
-                description,
-                date: item.pubDate ? item.pubDate : item.date,
-                guid: item.guid,
-              };
-
-              const newItem = await prisma.firehose_Items.create({
-                data: {
-                  title: newItemData.title,
-                  source: emoji,
-                  url: newItemData.url,
-                  description: newItemData.description,
-                  postdate: new Date(newItemData.date),
-                },
-              });
-
-              // Add item to RSS feed
-              feed.item({
-                title: newItemData.title,
-                url: newItemData.url,
-                description: newItemData.description,
-                date: newItemData.date,
-              });
-            } else {
-              // Add item to RSS feed using existing item's properties
+            let description;
+            if ("content:encoded" in item) {
+              description = item["content:encoded"];
+            } else if ("content" in item) {
+              description = item.content;
             }
+            const url = item.link;
+            const feedUrl = rssFeedUrls[index];
+            const emoji = urlToEmoji[feedUrl];
+
+            if (emoji === "🌏") {
+              description += "<p><a href='" + url + "'>Link</p>";
+            }
+
+            const newItem = {
+              title: item.title ? `${emoji} ${item.title}` : `${emoji} •`,
+              url,
+              description,
+              date: item.pubDate ? item.pubDate : item.date,
+              guid: item.guid,
+            };
+
+            console.log(`New item: ${JSON.stringify(newItem)}`);
+
+            try {
+              // Check if item exists in database
+              const existingItem = await prisma.firehose_Items.findUnique({
+                where: { url: newItem.url },
+              });
+            
+              if (!existingItem) {
+                console.log(`Item not in database, adding: ${JSON.stringify(newItem)}`);
+            
+                const addedItem = await prisma.firehose_Items.create({
+                  data: {
+                    title: newItem.title,
+                    source: emoji,
+                    url: newItem.url,
+                    description: newItem.description,
+                    postdate: new Date(newItem.date),
+                  },
+                });
+            
+                console.log("Item added successfully:", addedItem);
+              } else {
+                console.log(`Item already in database: ${JSON.stringify(existingItem)}`);
+              }
+            } catch (err) {
+              console.error("Error while interacting with the database:", err.message);
+              console.error("Error details:", err);
+            }
+
+            // Add item to RSS feed
+            feed.item({
+              title: newItem.title,
+              url: newItem.url,
+              description: newItem.description,
+              date: newItem.date,
+            });
           })
         );
       } catch (err) {
-        console.error(`Error processing feed: ${err}`);
+        console.error("Error parsing RSS feed:", err.message);
       }
     })
   );
