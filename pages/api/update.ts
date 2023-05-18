@@ -11,6 +11,7 @@ const urlToEmoji = {
   "https://medium.com/feed/@jonbell": "📝",
   "https://a-blog-about-jon-bell.ghost.io/rss/": "💬",
   "https://jbell.status.lol/feed": "⬜️",
+  "http://cooking.lot23.com/api/feed": "👨‍🍳",
   "https://mastodon.nz/@jon.rss": "🐘",
   "https://jonb.tumblr.com/rss": "💻",
   "https://www.lexaloffle.com/bbs/feed.php?uid=17302": "👾",
@@ -39,6 +40,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
     "https://medium.com/feed/@jonbell",
     "https://a-blog-about-jon-bell.ghost.io/rss/",
     "https://jbell.status.lol/feed",
+    "https://cooking.lot23.com/api/feed",
     "https://mastodon.nz/@jon.rss",
     "http://me.dm/@jbell.rss",
     "https://www.lexaloffle.com/bbs/feed.php?uid=17302",
@@ -77,7 +79,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
             }
 
             const newItem = {
-              title: item.title ? `${emoji} ${item.title}` : `${emoji} •`,
+              title: item.title || "•",
               url,
               description,
               date: item.pubDate ? item.pubDate : item.date,
