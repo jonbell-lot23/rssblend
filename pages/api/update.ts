@@ -79,7 +79,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
             }
 
             const newItem = {
-              title: item.title || "•",
+              title: item.title ? `${item.title}` : `${emoji} •`,
               url,
               description,
               date: item.pubDate ? item.pubDate : item.date,
