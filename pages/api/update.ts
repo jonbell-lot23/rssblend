@@ -24,6 +24,38 @@ const urlToEmoji = {
 
 const prisma = new PrismaClient();
 
+const processFeed = async (url) => {
+  const rssString = await fetch(url).then((res) => res.text());
+  const parser = new RssParser();
+  const parsedFeed = await parser.parseString(rssString);
+  const feedItems = parsedFeed.items.slice(0, 15).map((item) => {
+    let description;
+    if ("content:encoded" in item) {
+      description = item["content:encoded"];
+    } else if ("content" in item) {
+      description = item.content;
+    }
+    const feedUrl = url;
+    const emoji = urlToEmoji[feedUrl];
+
+    if (emoji === "🌏") {
+      description += "<p><a href='" + url + "'>Link</p>";
+    }
+
+    const newItem = {
+      title: item.title ? `${item.title}` : `${emoji} •`,
+      url: item.link,
+      description,
+      date: item.pubDate ? item.pubDate : item.date,
+      guid: item.guid,
+      feedUrl: feedUrl,
+      emoji: emoji,
+    };
+    return newItem;
+  });
+  return feedItems;
+};
+
 export default async (req: NextApiRequest, res: NextApiResponse) => {
   const feed = new rss({
     title: "Jon Bell's Firehose",
@@ -48,88 +80,43 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
     "https://feeds.pinboard.in/rss/secret:9951275a502175fe617d/u:JonB/t:toshare/",
   ];
 
-  const feedPromises = rssFeedUrls.map((url) =>
-    fetch(url).then((res) => res.text())
-  );
+  const existingItems = await prisma.firehose_Items.findMany({
+    select: { url: true },
+  });
 
-  const results = await Promise.all(feedPromises);
+  const existingUrls = new Set(existingItems.map((item) => item.url));
 
-  const feedItems = await Promise.all(
-    results.map(async (rssString, index) => {
-      const parser = new RssParser();
-      try {
-        const parsedFeed = await parser.parseString(rssString);
+  const feedPromises = rssFeedUrls.map(processFeed);
 
-        console.log(`Processing feed ${index}: ${rssFeedUrls[index]}`);
+  const allFeedItems = await Promise.all(feedPromises);
+  const newFeedItems = allFeedItems
+    .flat()
+    .filter((item) => !existingUrls.has(item.url));
 
-        await Promise.all(
-          parsedFeed.items.slice(0, 15).map(async (item) => {
-            let description;
-            if ("content:encoded" in item) {
-              description = item["content:encoded"];
-            } else if ("content" in item) {
-              description = item.content;
-            }
-            const url = item.link;
-            const feedUrl = rssFeedUrls[index];
-            const emoji = urlToEmoji[feedUrl];
+  for (let item of newFeedItems) {
+    try {
+      await prisma.firehose_Items.create({
+        data: {
+          title: item.title,
+          source: item.emoji,
+          url: item.url,
+          description: item.description,
+          postdate: new Date(item.date),
+        },
+      });
 
-            if (emoji === "🌏") {
-              description += "<p><a href='" + url + "'>Link</p>";
-            }
-
-            const newItem = {
-              title: item.title ? `${item.title}` : `${emoji} •`,
-              url,
-              description,
-              date: item.pubDate ? item.pubDate : item.date,
-              guid: item.guid,
-            };
-
-            console.log(`New item: ${JSON.stringify(newItem)}`);
-
-            try {
-              // Check if item exists in database
-              const existingItem = await prisma.firehose_Items.findUnique({
-                where: { url: newItem.url },
-              });
-            
-              if (!existingItem) {
-                console.log(`Item not in database, adding: ${JSON.stringify(newItem)}`);
-            
-                const addedItem = await prisma.firehose_Items.create({
-                  data: {
-                    title: newItem.title,
-                    source: emoji,
-                    url: newItem.url,
-                    description: newItem.description,
-                    postdate: new Date(newItem.date),
-                  },
-                });
-            
-                console.log("Item added successfully:", addedItem);
-              } else {
-                console.log(`Item already in database: ${JSON.stringify(existingItem)}`);
-              }
-            } catch (err) {
-              console.error("Error while interacting with the database:", err.message);
-              console.error("Error details:", err);
-            }
-
-            // Add item to RSS feed
-            feed.item({
-              title: newItem.title,
-              url: newItem.url,
-              description: newItem.description,
-              date: newItem.date,
-            });
-          })
-        );
-      } catch (err) {
-        console.error("Error parsing RSS feed:", err.message);
-      }
-    })
-  );
+      // Add item to RSS feed
+      feed.item({
+        title: item.title,
+        url: item.url,
+        description: item.description,
+        date: item.date,
+      });
+    } catch (err) {
+      console.error("Error while interacting with the database:", err.message);
+      console.error("Error details:", err);
+    }
+  }
 
   res.setHeader("Content-Type", "application/rss+xml");
   res.send(feed.xml());
