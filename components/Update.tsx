@@ -58,7 +58,7 @@ const Feed = () => {
   return (
     <>
       {isLoading ? (
-        <div className="flex h-screen w-screen items-center justify-center">
+        <div className="flex items-center justify-center w-screen h-screen">
           <div>
             <script src="https://unpkg.com/@lottiefiles/lottie-player@latest/dist/lottie-player.js"></script>
             <LoadingAnimation />
@@ -76,7 +76,7 @@ const Feed = () => {
             <div className="py-4">
               {feedData.slice(0, 25).map((item, index) => (
                 <React.Fragment key={index}>
-                  <div key={index} className="p-4 mb-2 flex">
+                  <div key={index} className="flex p-4 mb-2">
                     <div className="mr-1">{item.emoji ? item.emoji : "❓"}</div>
                     <div>
                       <a
@@ -90,7 +90,7 @@ const Feed = () => {
                       </a>
 
                       <div className="my-0">
-                        <div className="text-gray-400 leading-none">
+                        <div className="leading-none text-gray-400">
                           <span>{moment(item.date).fromNow()}</span>
                         </div>
 
@@ -101,7 +101,7 @@ const Feed = () => {
                       </div>
                     </div>
                   </div>
-                  <div className="border-t pb-6 w-1/2 mx-auto"></div>
+                  <div className="w-1/2 pb-6 mx-auto border-t"></div>
                 </React.Fragment>
               ))}
             </div>

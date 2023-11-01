@@ -5,7 +5,7 @@ import RssParser from "rss-parser";
 import { PrismaClient } from "@prisma/client";
 
 const urlToEmoji = {
-  "https://bouquet.lot23.com/api/rss?user=jon": "💐",
+  // "https://bouquet.lot23.com/api/rss?user=jon": "💐",
   "http://academia.lot23.com/api/feed": "🎓",
   "https://medium.com/feed/@jonbell": "📝",
   "https://a-blog-about-jon-bell.ghost.io/rss/": "💬",
@@ -64,7 +64,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
   });
 
   const rssFeedUrls = [
-    "https://bouquet.lot23.com/api/rss?user=jon",
+    // "https://bouquet.lot23.com/api/rss?user=jon",
     "http://academia.lot23.com/api/feed",
     "https://flickr.com/services/feeds/photos_public.gne?id=36521984990@N01&lang=en-us&format=atom",
     "https://picadilly.vercel.app/api/rss",
@@ -74,7 +74,6 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
     "https://jbell.status.lol/feed",
     "http://cooking.lot23.com/api/feed",
     "https://mastodon.nz/@jon.rss",
-    "https://www.lexaloffle.com/bbs/feed.php?uid=17302",
     "https://jonbell.micro.blog/feed.xml",
     "https://feeds.pinboard.in/rss/secret:9951275a502175fe617d/u:JonB/t:toshare/",
   ];
