@@ -1,0 +1,13 @@
+name: Trigger URL every 3 hours
+
+on:
+  schedule:
+    - cron: '0 */3 * * *'  # At minute 0 past every 3rd hour.
+
+jobs:
+  hit-url:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Curl request
+      run: curl https://firehose.lot23.com/update
