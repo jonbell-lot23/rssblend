@@ -14,10 +14,8 @@ export const getPost = async (id: string | string[]) => {
       throw new Error("Post not found");
     }
 
-    // Convert postdate to string
-    postData.postdate = postData.postdate.toISOString();
 
-    return postData;
+    return { ...postData, postdate: postData.postdate.toISOString() };
   } catch (error) {
     console.error("Error fetching data from database:", error.message);
     throw error;
