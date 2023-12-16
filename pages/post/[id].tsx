@@ -2,7 +2,7 @@ import Head from "next/head";
 import React from "react";
 import { GetStaticPaths, GetStaticProps } from "next";
 import { PrismaClient } from "@prisma/client";
-import { getPost } from "../api/getPost";
+import { getPost } from "../lib/getPost";
 
 const prisma = new PrismaClient();
 
