@@ -15,7 +15,7 @@ const Home = () => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      <header className="bg-[#d73d61] text-white top-0 left-0 w-full z-10">
+      <header className="bg-[#E9496F] text-white top-0 left-0 w-full z-10">
         <div className="container px-6 py-3 mx-auto shadow-b-md">
           <h1 className="text-xl font-medium text-center">
             Jon Bell's Firehose
