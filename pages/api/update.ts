@@ -16,7 +16,7 @@ const urlToEmoji = {
   "https://jonb.tumblr.com/rss": "💻",
   "https://www.lexaloffle.com/bbs/feed.php?uid=17302": "👾",
   "https://flickr.com/services/feeds/photos_public.gne?id=36521984990@N01&lang=en-us&format=atom": "🏞️",
-  "https://picadilly.vercel.app/api/rss": "🌅",
+// "https://picadilly.vercel.app/api/rss": "🌅",
   "https://feeds.pinboard.in/rss/secret:9951275a502175fe617d/u:JonB/t:toshare/": "🌏",
 };
 
@@ -26,7 +26,13 @@ const processFeed = async (url) => {
   console.log(`Processing feed: ${url}`);
   const rssString = await fetch(url).then((res) => res.text());
   const parser = new RssParser();
-  const parsedFeed = await parser.parseString(rssString);
+  let parsedFeed;
+  try {
+    parsedFeed = await parser.parseString(rssString);
+  } catch (err) {
+    console.error(`Error parsing feed ${url}: ${err.message}`);
+    return [];
+  }
   const feedItems = parsedFeed.items.slice(0, 15).map((item) => {
     let description;
     if ("content:encoded" in item) {
@@ -68,7 +74,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
     "https://bouquet.lot23.com/api/rss?user=jon",
     "http://academia.lot23.com/api/feed",
     "https://flickr.com/services/feeds/photos_public.gne?id=36521984990@N01&lang=en-us&format=atom",
-    "https://picadilly.vercel.app/api/rss",
+    // "https://picadilly.vercel.app/api/rss",
     "https://jonb.tumblr.com/rss",
     "https://medium.com/feed/@jonbell",
     "https://a-blog-about-jon-bell.ghost.io/rss/",
@@ -99,6 +105,11 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
 
   for (let item of newFeedItems) {
     try {
+      if (existingUrls.has(item.url)) {
+        console.log(`Skipping duplicate item: ${item.url}`);
+        continue;
+      }
+  
       await prisma.firehose_Items.create({
         data: {
           title: item.title,
@@ -108,7 +119,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
           postdate: new Date(item.date),
         },
       });
-
+  
       // Add item to RSS feed
       feed.item({
         title: item.title,
