@@ -42,6 +42,7 @@ model firehose_Items {
   description String?
   postdate    DateTime
   source      String?
+  slug        String?  @unique
 }
 
 model academia {
