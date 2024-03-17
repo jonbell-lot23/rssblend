@@ -22,6 +22,10 @@ const urlToEmoji = {
 
 const prisma = new PrismaClient();
 
+const generateSlug = () => {
+  return Math.random().toString(36).substr(2, 4) + '-' + Math.random().toString(36).substr(2, 4);
+}
+
 const processFeed = async (url) => {
   console.log(`Processing feed: ${url}`);
   const rssString = await fetch(url).then((res) => res.text());
@@ -117,6 +121,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
           url: item.url,
           description: item.description,
           postdate: new Date(item.date),
+          slug: generateSlug(),
         },
       });
   

@@ -22,7 +22,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
     feedData.forEach((item) => {
       feed.item({
         title: `${item.source} ${item.title}`,
-        url: item.url,
+        url: `https://firehose.lot23.com/post/${item.slug}`,
         description: item.description,
         date: new Date(item.postdate),
       });

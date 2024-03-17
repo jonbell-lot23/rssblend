@@ -20,7 +20,7 @@ const Feed = () => {
           return {
             title: item.title,
             emoji: item.source,
-            link: item.url,
+            link: `https://firehose.lot23.com/post/${item.slug}`, // Changed link to use slug
             description: item.description,
             date: item.postdate,
           };
