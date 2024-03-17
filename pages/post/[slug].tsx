@@ -32,7 +32,7 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
 const Post = ({ post }) => {
   if (!post) {
     return <div>No post found</div>;
-  }const Post = ({ post }) => {
+  }
   return (
     <div>
       <Head>
