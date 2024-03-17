@@ -21,11 +21,12 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
   const post = await getPost(params.slug.toString());
 
   // Convert postdate to string
+  let postdateString;
   if (post.postdate) {
-    post.postdate = post.postdate.toISOString();
+    postdateString = post.postdate.toISOString();
   }
 
-  return { props: { post } };
+  return { props: { post: { ...post, postdate: postdateString } } };
 };
 
 const Post = ({ post }) => {
