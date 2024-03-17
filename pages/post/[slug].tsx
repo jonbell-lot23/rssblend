@@ -61,7 +61,7 @@ const Post = ({ post }) => {
                 </a>
 
                 <div className="my-0">
-                  <div className="leading-none text-gray-400">
+                  <div className="mb-8 leading-none text-gray-400">
                     <span>{new Date(post.postdate).toLocaleDateString()}</span>
                   </div>
 
