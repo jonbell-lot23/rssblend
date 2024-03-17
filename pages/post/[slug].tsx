@@ -45,19 +45,14 @@ const Post = ({ post }) => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      <header className="bg-[#E9496F] text-white top-0 left-0 w-full z-10">
-        <div className="container px-6 py-3 mx-auto shadow-b-md">
-          <h1 className="text-xl font-medium text-center">{post.name}</h1>
-        </div>
-      </header>
       <main>
-        <div className="mx-auto prose">
+        <div className="mx-auto my-32 prose">
           <div className="py-4">
-            <div className="flex p-4 mb-2">
+            <div className="flex p-4 mb-0 text-xl font-light">
               <div>
                 <a
                   href={post.link}
-                  className="text-[#E9496F] text-decoration-none text-truncate break-normal text-xl leading-none"
+                  className="text-[#E9496F] text-decoration-none text-truncate break-normal text-3xl font-light leading-none"
                 >
                   {post.title.replace(/<[^>]+>/g, "").trim() !==
                   post.description.replace(/<[^>]+>/g, "").trim()
@@ -67,7 +62,7 @@ const Post = ({ post }) => {
 
                 <div className="my-0">
                   <div className="leading-none text-gray-400">
-                    <span>{post.date}</span>
+                    <span>{new Date(post.postdate).toLocaleDateString()}</span>
                   </div>
 
                   <div
