@@ -22,8 +22,30 @@ const Home = () => {
           </h1>
         </div>
       </header>
-      <div className="w-1/2">
-        <PostsPerWeekChart />
+      <div className="max-w-screen-lg mx-auto">
+        <div className="w-full">
+          <PostsPerWeekChart />
+        </div>
+        <div className="flex flex-wrap justify-around mt-4">
+          {["92K", "212", "32", "13", "35"].map((stat, index) => {
+            const descriptions = [
+              "Total words",
+              "Words per day",
+              "Cool links",
+              "Different sources",
+              "Another number",
+            ];
+            return (
+              <div
+                key={index}
+                className="w-100% px-4 py-8 text-center bg-white rounded"
+              >
+                <p className="text-6xl font-bold">{stat}</p>
+                <p className="text-lg">{descriptions[index]}</p>
+              </div>
+            );
+          })}
+        </div>
       </div>
     </div>
   );

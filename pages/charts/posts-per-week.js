@@ -53,8 +53,8 @@ const PostsPerWeekChart = () => {
             {
               label: "Moving Average",
               data: movingAverageData.map((item) => item.average),
-              backgroundColor: "#4A90E2",
-              borderColor: "#4A90E2",
+              backgroundColor: "#808080",
+              borderColor: "#808080",
               fill: false,
               type: "line", // This will be displayed as a line
             },
@@ -71,7 +71,21 @@ const PostsPerWeekChart = () => {
   }, []);
 
   return chartData && chartData.labels && chartData.labels.length > 0 ? (
-    <Bar data={chartData} />
+    <Bar
+      data={chartData}
+      options={{
+        scales: {
+          x: {
+            display: false,
+          },
+          y: {
+            grid: {
+              display: false,
+            },
+          },
+        },
+      }}
+    />
   ) : null;
 };
 
