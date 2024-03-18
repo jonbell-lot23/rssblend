@@ -22,7 +22,9 @@ const Home = () => {
           </h1>
         </div>
       </header>
-      <PostsPerWeekChart />
+      <div className="w-1/2">
+        <PostsPerWeekChart />
+      </div>
     </div>
   );
 };

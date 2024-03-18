@@ -2,7 +2,7 @@
 import React, { useEffect, useState } from "react";
 import { Bar } from "react-chartjs-2";
 import { Chart, registerables } from "chart.js";
-import { format } from "date-fns";
+import { format, addWeeks } from "date-fns";
 
 Chart.register(...registerables);
 
@@ -25,13 +25,38 @@ const PostsPerWeekChart = () => {
           };
         });
 
+        const movingAverageData = formattedData.map((item, index, array) => {
+          const startOfWeek = addWeeks(new Date(item.week), -4);
+          const monthData = array.filter(
+            (data) =>
+              new Date(data.week) > startOfWeek &&
+              new Date(data.week) <= new Date(item.week)
+          );
+          const average =
+            monthData.reduce((acc, curr) => acc + Number(curr.post_count), 0) /
+            (monthData.length || 1); // Avoid division by zero
+          return {
+            week: item.week,
+            average: average,
+          };
+        });
+
         setChartData({
           labels: formattedData.map((item) => item.week),
           datasets: [
             {
-              label: "Number of Posts",
+              label: "Number of posts per week",
               data: formattedData.map((item) => item.post_count),
               backgroundColor: "#E9496F",
+              type: "bar", // This will be displayed as bars
+            },
+            {
+              label: "Moving Average",
+              data: movingAverageData.map((item) => item.average),
+              backgroundColor: "#4A90E2",
+              borderColor: "#4A90E2",
+              fill: false,
+              type: "line", // This will be displayed as a line
             },
           ],
         });
