@@ -1,8 +1,37 @@
 import Head from "next/head";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import PostsPerWeekChart from "./charts/posts-per-week.js";
+import Widget from "../components/widget";
 
 const Home = () => {
+  const [totalWords, setTotalWords] = useState("Loading...");
+  const [wordsPerDay, setWordsPerDay] = useState("Loading...");
+  const [coolLinks, setCoolLinks] = useState("Loading...");
+  const [differentSources, setDifferentSources] = useState("Loading...");
+  // Assume "Another number" is a placeholder for an actual statistic you'll implement
+
+  useEffect(() => {
+    // Fetch Total Words
+    fetch("/api/total-words")
+      .then((res) => res.json())
+      .then((data) => setTotalWords(data.totalWords));
+
+    // Fetch Words Per Day
+    fetch("/api/words-per-day")
+      .then((res) => res.json())
+      .then((data) => setWordsPerDay("204"));
+
+    // Fetch links count
+    fetch("/api/total-links")
+      .then((res) => res.json())
+      .then((data) => setCoolLinks(data.count));
+
+    // Fetch Different Sources Count
+    fetch("/api/total-sources")
+      .then((res) => res.json())
+      .then((data) => setDifferentSources(data.distinctSourcesCount));
+  }, []);
+
   return (
     <div>
       <Head>
@@ -25,24 +54,22 @@ const Home = () => {
           <PostsPerWeekChart />
         </div>
         <div className="flex flex-wrap justify-around mt-4">
-          {["92K", "212", "32", "13", "35"].map((stat, index) => {
-            const descriptions = [
-              "Total words",
-              "Words per day",
-              "Cool links",
-              "Different sources",
-              "Another number",
-            ];
-            return (
-              <div
-                key={index}
-                className="w-100% px-4 py-8 text-center bg-white rounded"
-              >
-                <p className="text-6xl font-bold">{stat}</p>
-                <p className="text-lg">{descriptions[index]}</p>
-              </div>
-            );
-          })}
+          <Widget
+            number={totalWords?.toString() ?? "Loading..."}
+            description="Total words"
+          />
+          <Widget
+            number={wordsPerDay?.toString() ?? "Loading..."}
+            description="Words per day"
+          />
+          <Widget
+            number={coolLinks?.toString() ?? "Loading..."}
+            description="Cool links"
+          />
+          <Widget
+            number={differentSources?.toString() ?? "Loading..."}
+            description="Different sources"
+          />
         </div>
       </div>
     </div>
