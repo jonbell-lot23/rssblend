@@ -1,7 +1,7 @@
 import Head from "next/head";
 import React, { useEffect, useState } from "react";
 import PostsPerWeekChart from "./charts/posts-per-week.js";
-import Widget from "../components/widget";
+import Widget from "../components/Widget";
 
 const Home = () => {
   const [totalWords, setTotalWords] = useState("Loading...");
