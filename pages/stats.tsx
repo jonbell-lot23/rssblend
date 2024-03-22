@@ -8,28 +8,32 @@ const Home = () => {
   const [wordsPerDay, setWordsPerDay] = useState("Loading...");
   const [coolLinks, setCoolLinks] = useState("Loading...");
   const [differentSources, setDifferentSources] = useState("Loading...");
-  // Assume "Another number" is a placeholder for an actual statistic you'll implement
 
   useEffect(() => {
+    // Define a generic fetch function
+    const fetchData = async (apiUrl, setter) => {
+      try {
+        const response = await fetch(apiUrl);
+        if (!response.ok) throw new Error("Network response was not ok");
+        const data = await response.json();
+        setter(data?.totalWords ?? "No result");
+      } catch (error) {
+        console.error("Fetching error:", error);
+        setter("No result");
+      }
+    };
+
     // Fetch Total Words
-    fetch("/api/total-words")
-      .then((res) => res.json())
-      .then((data) => setTotalWords(data.totalWords));
+    fetchData("/api/total-words", setTotalWords);
 
-    // Fetch Words Per Day
-    fetch("/api/words-per-day")
-      .then((res) => res.json())
-      .then((data) => setWordsPerDay("204"));
+    // Fetch Words Per Day - Here the hardcoded "204" value should be replaced with actual data from API
+    fetchData("/api/words-per-day", setWordsPerDay);
 
-    // Fetch links count
-    fetch("/api/total-links")
-      .then((res) => res.json())
-      .then((data) => setCoolLinks(data.count));
+    // Fetch Cool Links Count
+    fetchData("/api/total-links", setCoolLinks);
 
     // Fetch Different Sources Count
-    fetch("/api/total-sources")
-      .then((res) => res.json())
-      .then((data) => setDifferentSources(data.distinctSourcesCount));
+    fetchData("/api/total-sources", setDifferentSources);
   }, []);
 
   return (
