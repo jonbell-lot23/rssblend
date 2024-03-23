@@ -6,7 +6,7 @@ import Widget from "../components/Widget";
 const Home = () => {
   const [totalWords, setTotalWords] = useState("Loading...");
   const [wordsPerDay, setWordsPerDay] = useState("Loading...");
-  const [coolLinks, setCoolLinks] = useState("Loading...");
+  const [totalLinks, setTotalLinks] = useState("Loading...");
   const [differentSources, setDifferentSources] = useState("Loading...");
 
   useEffect(() => {
@@ -30,10 +30,14 @@ const Home = () => {
     fetchData("/api/words-per-day", setWordsPerDay, "words_per_day");
 
     // Fetch Cool Links Count
-    fetchData("/api/total-links", setCoolLinks, "coolLinks");
+    fetchData("/api/total-links", setTotalLinks, "count");
 
     // Fetch Different Sources Count
-    fetchData("/api/total-sources", setDifferentSources, "differentSources");
+    fetchData(
+      "/api/total-sources",
+      setDifferentSources,
+      "distinctSourcesCount"
+    );
   }, []);
 
   return (
@@ -67,7 +71,7 @@ const Home = () => {
             description="Words per day"
           />
           <Widget
-            number={coolLinks?.toString() ?? "Loading..."}
+            number={totalLinks?.toString() ?? "Loading..."}
             description="Cool links"
           />
           <Widget
