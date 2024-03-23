@@ -37,7 +37,7 @@ const Home = () => {
         />
         <Thumb
           slug="1ce0-81d9"
-          description="I don't read much, but more than zero."
+          description="I don't read much, but I read some."
         />
         <Thumb
           slug="b870-6f73"
