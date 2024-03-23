@@ -11,12 +11,12 @@ const Home = () => {
 
   useEffect(() => {
     // Define a generic fetch function
-    const fetchData = async (apiUrl, setter) => {
+    const fetchData = async (apiUrl, setter, dataKey) => {
       try {
         const response = await fetch(apiUrl);
         if (!response.ok) throw new Error("Network response was not ok");
         const data = await response.json();
-        setter(data?.totalWords ?? "No result");
+        setter(data?.[dataKey] ?? "No result");
       } catch (error) {
         console.error("Fetching error:", error);
         setter("No result");
@@ -24,16 +24,16 @@ const Home = () => {
     };
 
     // Fetch Total Words
-    fetchData("/api/total-words", setTotalWords);
+    fetchData("/api/total-words", setTotalWords, "totalWords");
 
-    // Fetch Words Per Day - Here the hardcoded "204" value should be replaced with actual data from API
-    fetchData("/api/words-per-day", setWordsPerDay);
+    // Fetch Words Per Day
+    fetchData("/api/words-per-day", setWordsPerDay, "words_per_day");
 
     // Fetch Cool Links Count
-    fetchData("/api/total-links", setCoolLinks);
+    fetchData("/api/total-links", setCoolLinks, "coolLinks");
 
     // Fetch Different Sources Count
-    fetchData("/api/total-sources", setDifferentSources);
+    fetchData("/api/total-sources", setDifferentSources, "differentSources");
   }, []);
 
   return (
