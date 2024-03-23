@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 
 interface ThumbProps {
   slug: string;
+  description: string;
 }
 
 interface FirehoseItem {
@@ -11,7 +12,7 @@ interface FirehoseItem {
   slug: string;
 }
 
-const Thumb: React.FC<ThumbProps> = ({ slug }) => {
+const Thumb: React.FC<ThumbProps> = ({ slug, description }) => {
   const [item, setItem] = useState<FirehoseItem | null>(null);
 
   useEffect(() => {
@@ -37,18 +38,20 @@ const Thumb: React.FC<ThumbProps> = ({ slug }) => {
     : "Invalid date";
 
   return (
-    <div className="flex flex-col p-6 mb-6 space-y-1 transition-shadow duration-200 ease-in-out bg-white rounded-lg shadow-lg hover:shadow-xl w-96">
-      <a
-        href={`/post/${item.slug}`}
-        className="text-[#E9496F] text-decoration-none text-truncate break-normal text-lg font-medium leading-none"
-      >
-        {item.title}
-      </a>
-      <div className="my-0">
-        <div className="mb-0 leading-none text-gray-400">
-          <span>{formattedDate}</span>
+    <div className="flex flex-col w-1/4 p-6 mt-8 mb-6 mr-1 space-y-1 transition-shadow duration-200 ease-in-out bg-white rounded-lg shadow-lg hover:shadow-xl">
+      <a href={`/post/${item.slug}`}>
+        <div className="text-[#E9496F] text-decoration-none text-truncate break-normal text-lg font-medium leading-none">
+          {" "}
+          {item.title}
         </div>
-      </div>
+
+        <div className="my-0">
+          <div className="mb-0 leading-none text-gray-400">
+            <span>{formattedDate}</span>
+          </div>
+          <p className="mt-4">{description}</p>
+        </div>
+      </a>
     </div>
   );
 };

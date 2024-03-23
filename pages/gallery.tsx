@@ -23,12 +23,30 @@ const Home = () => {
         </div>
       </header>
       <div className="flex flex-wrap justify-around">
-        <Thumb slug="o573-s7j0" />
-        <Thumb slug="202d-93c8" />
-        <Thumb slug="5b70-7e78" />
-        <Thumb slug="1ce0-81d9" />
-        <Thumb slug="b870-6f73" />
-        <Thumb slug="2f07-02db" />
+        <Thumb
+          slug="o573-s7j0"
+          description="I try to build an 'idea lab' with a new debate partner I found on the internet"
+        />
+        <Thumb
+          slug="202d-93c8"
+          description="Some people say anything that can exist does exist, into infinity. Maybe they're right, but..."
+        />
+        <Thumb
+          slug="5b70-7e78"
+          description="Either everything Meta does is wrong, or the world is complicated and nuanced."
+        />
+        <Thumb
+          slug="1ce0-81d9"
+          description="I don't read much, but more than zero."
+        />
+        <Thumb
+          slug="b870-6f73"
+          description="Everyone has their predictions, and here are mine."
+        />
+        <Thumb
+          slug="2f07-02db"
+          description="People say interesting things if you let them."
+        />
       </div>
     </div>
   );
