@@ -50,8 +50,11 @@ const Firehose = () => {
                 <h2>Read up</h2>
               </div>
               <p>
-                The concept is explained more in the article "Hey creators,
-                please make firehoses!" →
+                The concept is explained more in the article{" "}
+                <a href="https://jonbell.medium.com/hey-creators-please-make-firehoses-8d0c48c075e4">
+                  Hey creators, please make firehoses!
+                </a>{" "}
+                →
               </p>
             </div>
             <div className={styles.column}>
@@ -99,7 +102,8 @@ const Firehose = () => {
               </div>
               <p>
                 If you think this is a fun concept, I'd love to hear from you!
-                Send me an email at jb@lot23.com and make my day.
+                Send me an email at{" "}
+                <a href="mailto:jb@lot23.com">jb@lot23.com</a> and make my day.
               </p>
             </div>
           </div>

@@ -79,7 +79,8 @@ const Firehose = () => {
             </div>
             <p>
               If you think this is a fun concept, I'd love to hear from you!
-              Send me an email at jb@lot23.com and make my day.
+              Send me an email at <a href="mailto:jb@lot23.com">jb@lot23.com</a>{" "}
+              and make my day.
             </p>
           </div>
         </div>

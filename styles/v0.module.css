@@ -32,6 +32,10 @@
   width: 100%; /* Full width on mobile */
 }
 
+.content a {
+  text-decoration: underline;
+}
+
 .content h2 {
   font-size: 32px;
   font-weight: bold;
