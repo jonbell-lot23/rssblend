@@ -1,53 +1,63 @@
-.container {
-  max-width: 1200px;
-  margin: 3rem auto 0;
-  padding: 2rem;
-  font-size: 1.3rem;
-}
-
-.heading {
-  font-weight: bold;
-  line-height: 1.2;
-  color: #e9496f;
-  margin-bottom: 1rem;
+.firehose {
   display: flex;
-  justify-content: center;
-  align-items: center;
+  flex-direction: row;
+  justify-content: space-between;
+  height: 100vh;
+  overflow: hidden;
+  background-color: #f15f33;
+  font-size: 24px;
+  color: #f6f1dc;
+  line-height: 120%;
 }
 
-.heading img {
-  width: 440px;
-}
-
-.blurb {
-  max-width: 430px;
-  line-height: 1.35;
-  margin: 0 auto;
-  background-color: #e9496f;
-  padding: 30px;
-  color: #fff;
-}
-
-.blurb a {
-  text-decoration: underline;
-}
-
-.blurb a:hover {
-  color: rgba(255, 239, 8, 0.895);
-}
-
-.stats {
-  max-width: 430px;
-  margin: 3rem auto;
-}
-
-.stats .header {
+.headerContent h1 {
+  font-size: 64px;
   font-weight: bold;
-  font-size: 2rem;
+  margin-top: 0;
+  line-height: 100%;
 }
 
-.heroImage {
-  max-width: 100%;
-  aspect-ratio: 3 / 1;
-  object-fit: cover;
+.sidebar {
+  flex: 0 0 365px;
+  background: url("/sidebar.png") no-repeat center bottom;
+  background-size: 100% auto;
+  display: none; /* Hide sidebar on mobile */
+}
+
+.content {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  padding: 40px;
+  width: 100%; /* Full width on mobile */
+}
+
+.content h2 {
+  font-size: 32px;
+  font-weight: bold;
+}
+
+.column {
+  margin-top: 40px;
+}
+
+.column p {
+  padding-left: 40px;
+  padding-top: 12px;
+}
+
+.learnMore {
+  margin-top: 40px;
+  width: 100%; /* Full width on mobile */
+}
+
+/* Media query for larger screens */
+@media (min-width: 768px) {
+  .sidebar {
+    display: block; /* Show sidebar on larger screens */
+  }
+  .content,
+  .learnMore {
+    width: 480px; /* Set width for larger screens */
+  }
 }
