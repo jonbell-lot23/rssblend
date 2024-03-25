@@ -114,16 +114,22 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
         continue;
       }
   
-      await prisma.firehose.create({
-        data: {
-          title: item.title,
-          source: item.emoji,
-          url: item.url,
-          description: item.description,
-          postdate: new Date(item.date),
-          slug: generateSlug(),
-        },
-      });
+      try {
+        await prisma.firehose.create({
+          data: {
+            title: item.title,
+            source: item.emoji,
+            url: item.url,
+            description: item.description,
+            postdate: new Date(item.date),
+            slug: generateSlug(),
+          },
+        });
+      } catch (err) {
+        console.error("Error while interacting with the database:", err.message);
+        console.error("Data causing the error:", item);
+        console.error("Error details:", err);
+      }
   
       // Add item to RSS feed
       feed.item({
