@@ -7,7 +7,7 @@ import type { NextApiRequest, NextApiResponse } from 'next';
 export default async function distinctSourcesCount(req: NextApiRequest, res: NextApiResponse) {
   try {
     // Count distinct non-null source values
-    const result = await prisma.$queryRaw`SELECT COUNT(DISTINCT source) AS count FROM "firehose_Items" WHERE source IS NOT NULL;`;
+    const result = await prisma.$queryRaw`SELECT COUNT(DISTINCT source) AS count FROM "firehose" WHERE source IS NOT NULL;`;
     
     // Assuming the result is an array of objects, where each object has a 'count' property
     const countResult = result[0]?.count;

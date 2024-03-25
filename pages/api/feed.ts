@@ -6,7 +6,7 @@ const prisma = new PrismaClient();
 
 export default async (req: NextApiRequest, res: NextApiResponse) => {
   try {
-    const feedData = await prisma.firehose_Items.findMany({
+    const feedData = await prisma.firehose.findMany({
       orderBy: {
         postdate: "desc",
       },

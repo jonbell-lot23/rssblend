@@ -4,7 +4,7 @@ const prisma = new PrismaClient();
 
 export const getPost = async (slug: string | string[]) => {
   try {
-    const postData = await prisma.firehose_Items.findUnique({
+    const postData = await prisma.firehose.findUnique({
       where: {
         slug: typeof slug === 'string' ? slug : slug[0],
       },

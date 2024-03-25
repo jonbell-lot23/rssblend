@@ -9,7 +9,7 @@ export default async function wordsPerDay(req: NextApiRequest, res: NextApiRespo
         (SUM(LENGTH(description) - LENGTH(REPLACE(description, ' ', '')) + 1) / 
          (CURRENT_DATE - DATE '2023-01-01'))::FLOAT AS words_per_day
       FROM
-        "firehose_Items";
+        "firehose";
     `;
     res.status(200).json(totalWordsPerDay[0]);
   } catch (e) {

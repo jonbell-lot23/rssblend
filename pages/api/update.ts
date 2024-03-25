@@ -91,7 +91,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
   ];
 
   console.log("Fetching existing items from the database.");
-  const existingItems = await prisma.firehose_Items.findMany({
+  const existingItems = await prisma.firehose.findMany({
     select: { url: true },
   });
 
@@ -114,7 +114,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
         continue;
       }
   
-      await prisma.firehose_Items.create({
+      await prisma.firehose.create({
         data: {
           title: item.title,
           source: item.emoji,

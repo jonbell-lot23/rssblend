@@ -8,116 +8,12 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model bouquet {
-  id                   String                 @id
-  date                 String?
-  name                 String?
-  detail               String?
-  url                  String?
-  username             String?
-  bouquet_emoji_lookup bouquet_emoji_lookup[]
-}
-
-model bouquet2023 {
-  date        DateTime? @db.Timestamptz(6)
-  description String?
-  url         String?
-  username    String?
-  id          Int       @id @default(autoincrement())
-  emoji       String?
-}
-
-model bouquet_emoji_lookup {
-  id        BigInt   @id @default(autoincrement())
-  name      String?  @db.VarChar
-  emoji     String?  @db.VarChar
-  bouquetId String?
-  bouquet   bouquet? @relation(fields: [bouquetId], references: [id])
-}
-
-model firehose_Items {
+model firehose {
   id          Int      @id @default(autoincrement())
   title       String
   url         String   @unique
   description String?
   postdate    DateTime
   source      String?
-  slug        String?  @unique
-}
-
-model academia {
-  id         Int       @id @default(autoincrement())
-  created_at DateTime? @default(now()) @db.Timestamptz(6)
-  title      String?
-  body       String?
-}
-
-model Movie {
-  id           Int            @id @default(autoincrement())
-  title        String         @unique
-  MovieRatings MovieRatings[]
-}
-
-model MovieRatings {
-  id        Int     @id @default(autoincrement())
-  rating    Rating
-  rationale String?
-  userId    Int
-  movieId   Int
-  Movie     Movie   @relation(fields: [movieId], references: [id])
-  User      User    @relation(fields: [userId], references: [id])
-}
-
-model User {
-  id           Int            @id @default(autoincrement())
-  MovieRatings MovieRatings[]
-}
-
-model arbiter_v1 {
-  id                 BigInt    @id(map: "arbiter-v1_pkey") @default(autoincrement())
-  created_at         DateTime? @default(now()) @db.Timestamptz(6)
-  url                String?
-  summary_raw        String?
-  summary_translated String?
-}
-
-model cooking {
-  id         Int       @id @default(autoincrement())
-  created_at DateTime? @db.Timestamptz(6)
-  title      String?
-  body       String?
-}
-
-model ep_shows {
-  id       Int     @id
-  date     String?
-  location String?
-  quality  Int?    @db.SmallInt
-}
-
-model ep_songperformances {
-  id      Int  @id
-  showid  Int?
-  songid  Int?
-  quality Int?
-}
-
-model ep_songs {
-  id                Int     @id
-  name              String?
-  name_phish        String?
-  name_taylorswift  String?
-  name_gratefuldead String?
-  name_pearljam     String?
-  name_radiohead    String?
-  standard_duration String?
-  weighting         Int?    @db.SmallInt
-}
-
-enum Rating {
-  Like
-  DidNotLike
-  Interested
-  NotInterested
-  Unsure
+  slug        String?  @unique @default("")
 }

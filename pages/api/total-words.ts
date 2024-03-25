@@ -8,7 +8,7 @@ export default async function totalWords(req: NextApiRequest, res: NextApiRespon
   try {
     const result = await prisma.$queryRaw`
       SELECT SUM(LENGTH(description) - LENGTH(REPLACE(description, ' ', '')) + 1) AS total_words
-      FROM "firehose_Items";
+      FROM "firehose";
     `;
     const totalWords = JSON.parse(
       JSON.stringify(result, (key, value) =>

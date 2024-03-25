@@ -16,9 +16,7 @@ const Firehose = () => {
       </Head>
 
       <div className={styles.firehose}>
-        <div className={styles.sidebar}>
-          {/* Content for the left graphic */}
-        </div>
+        <div className={styles.sidebar}></div>
         <div className={styles.content}>
           <div className={styles.masthead}>
             <div className={styles.headerContent}>

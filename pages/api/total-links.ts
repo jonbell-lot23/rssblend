@@ -6,7 +6,7 @@ import type { NextApiRequest, NextApiResponse } from 'next';
 export default async function coolLinksCount(req: NextApiRequest, res: NextApiResponse) {
   try {
     // Count records where the source is 'globe'
-    const linksCount = await prisma.firehose_Items.count({
+    const linksCount = await prisma.firehose.count({
       where: {
         source: '🌏'
       }

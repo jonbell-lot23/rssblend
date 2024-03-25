@@ -8,7 +8,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     return res.status(400).json({ error: 'Invalid slug' });
   }
 
-  const firehoseItem = await prisma.firehose_Items.findUnique({
+  const firehoseItem = await prisma.firehose.findUnique({
     where: { slug },
   });
 
