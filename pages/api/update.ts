@@ -58,7 +58,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
 
   // Fetch sources from the database
   const sources = await prisma.source.findMany({
-    select: { url: true, emoji: true, userId: true },
+    select: { url: true, emoji: true, userid: true },
   });
 
   console.log("Fetching existing items from the database.");
@@ -91,8 +91,8 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
           description: item.description,
           postdate: new Date(item.date),
           slug: generateSlug(),
-          // Add the userId to the data being saved
-          userId: sources.find(source => source.url === item.feedUrl)?.userId,
+          // Add the userid to the data being saved
+          userid: sources.find(source => source.url === item.feedUrl)?.userid,
         },
       });
 

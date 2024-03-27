@@ -30,5 +30,5 @@ model Source {
   url    String
   userid Int
   emoji  String
-  user   User   @relation(fields: [userid], references: [id], map: "Source_userId_fkey")
+  user   User   @relation(fields: [userid], references: [id], map: "Source_userid_fkey")
 }
