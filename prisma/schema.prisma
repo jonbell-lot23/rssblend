@@ -17,3 +17,18 @@ model firehose {
   source      String?
   slug        String?  @unique @default("")
 }
+
+model User {
+  id        Int      @id @default(autoincrement())
+  name      String
+  createdAt DateTime @default(now())
+  sources   Source[]
+}
+
+model Source {
+  id     Int    @id @default(autoincrement())
+  url    String
+  userid Int
+  emoji  String
+  user   User   @relation(fields: [userid], references: [id], map: "Source_userId_fkey")
+}

@@ -4,29 +4,13 @@ import fetch from "node-fetch";
 import RssParser from "rss-parser";
 import { PrismaClient } from "@prisma/client";
 
-const urlToEmoji = {
-  "https://bouquet.lot23.com/api/rss?user=jon": "💐",
-  "http://academia.lot23.com/api/feed": "🎓",
-  "https://medium.com/feed/@jonbell": "📝",
-  "https://a-blog-about-jon-bell.ghost.io/rss/": "💬",
-  "https://jbell.status.lol/feed": "⬜️",
-  "https://jbell.weblog.lol/rss.xml": "📇",
-  "http://cooking.lot23.com/api/feed": "👨‍🍳",
-  "https://mastodon.nz/@jon.rss": "🐘",
-  "https://jonb.tumblr.com/rss": "💻",
-  "https://www.lexaloffle.com/bbs/feed.php?uid=17302": "👾",
-  "https://flickr.com/services/feeds/photos_public.gne?id=36521984990@N01&lang=en-us&format=atom": "🏞️",
-  "https://picadilly.vercel.app/api/rss": "🌅",
-  "https://feeds.pinboard.in/rss/secret:9951275a502175fe617d/u:JonB/t:toshare/": "🌏",
-};
-
 const prisma = new PrismaClient();
 
 const generateSlug = () => {
   return Math.random().toString(36).substr(2, 4) + '-' + Math.random().toString(36).substr(2, 4);
 }
 
-const processFeed = async (url) => {
+const processFeed = async (url, emoji) => {
   console.log(`Processing feed: ${url}`);
   const rssString = await fetch(url).then((res) => res.text());
   const parser = new RssParser();
@@ -44,8 +28,6 @@ const processFeed = async (url) => {
     } else if ("content" in item) {
       description = item.content;
     }
-    const feedUrl = url;
-    const emoji = urlToEmoji[feedUrl];
 
     if (emoji === "🌏") {
       description += "<p><a href='" + url + "'>Link</p>";
@@ -57,7 +39,7 @@ const processFeed = async (url) => {
       description,
       date: item.pubDate ? item.pubDate : item.date,
       guid: item.guid,
-      feedUrl: feedUrl,
+      feedUrl: url,
       emoji: emoji,
     };
     return newItem;
@@ -74,21 +56,10 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
     site_url: "http://firehose.lot23.com",
   });
 
-  const rssFeedUrls = [
-    "https://bouquet.lot23.com/api/rss?user=jon",
-    "http://academia.lot23.com/api/feed",
-    "https://flickr.com/services/feeds/photos_public.gne?id=36521984990@N01&lang=en-us&format=atom",
-    "https://picadilly.vercel.app/api/rss",
-    "https://jonb.tumblr.com/rss",
-    "https://medium.com/feed/@jonbell",
-    "https://a-blog-about-jon-bell.ghost.io/rss/",
-    "https://jbell.status.lol/feed",
-    "https://jbell.weblog.lol/rss.xml",
-    "http://cooking.lot23.com/api/feed",
-    "https://mastodon.nz/@jon.rss",
-    "https://jonbell.micro.blog/feed.xml",
-    "https://feeds.pinboard.in/rss/secret:9951275a502175fe617d/u:JonB/t:toshare/",
-  ];
+  // Fetch sources from the database
+  const sources = await prisma.source.findMany({
+    select: { url: true, emoji: true, userId: true },
+  });
 
   console.log("Fetching existing items from the database.");
   const existingItems = await prisma.firehose.findMany({
@@ -98,39 +69,33 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
   const existingUrls = new Set(existingItems.map((item) => item.url));
 
   console.log("Processing RSS feeds.");
-  const feedPromises = rssFeedUrls.map(processFeed);
+  const feedPromises = sources.map(source => processFeed(source.url, source.emoji));
 
-  const allFeedItems = await Promise.all(feedPromises);
-  const newFeedItems = allFeedItems
-    .flat()
-    .filter((item) => !existingUrls.has(item.url));
+  const allFeedItems = (await Promise.all(feedPromises)).flat();
+  const newFeedItems = allFeedItems.filter((item) => !existingUrls.has(item.url));
 
   console.log(`Found ${newFeedItems.length} new feed items.`);
 
   for (let item of newFeedItems) {
+    if (existingUrls.has(item.url)) {
+      console.log(`Skipping duplicate item: ${item.url}`);
+      continue;
+    }
+
     try {
-      if (existingUrls.has(item.url)) {
-        console.log(`Skipping duplicate item: ${item.url}`);
-        continue;
-      }
-  
-      try {
-        await prisma.firehose.create({
-          data: {
-            title: item.title,
-            source: item.emoji,
-            url: item.url,
-            description: item.description,
-            postdate: new Date(item.date),
-            slug: generateSlug(),
-          },
-        });
-      } catch (err) {
-        console.error("Error while interacting with the database:", err.message);
-        console.error("Data causing the error:", item);
-        console.error("Error details:", err);
-      }
-  
+      await prisma.firehose.create({
+        data: {
+          title: item.title,
+          source: item.emoji,
+          url: item.url,
+          description: item.description,
+          postdate: new Date(item.date),
+          slug: generateSlug(),
+          // Add the userId to the data being saved
+          userId: sources.find(source => source.url === item.feedUrl)?.userId,
+        },
+      });
+
       // Add item to RSS feed
       feed.item({
         title: item.title,
@@ -141,6 +106,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
       console.log(`Successfully processed item: ${item.url}`);
     } catch (err) {
       console.error("Error while interacting with the database:", err.message);
+      console.error("Data causing the error:", item);
       console.error("Error details:", err);
     }
   }
