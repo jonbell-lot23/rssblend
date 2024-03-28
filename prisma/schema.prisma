@@ -16,19 +16,22 @@ model firehose {
   postdate    DateTime
   source      String?
   slug        String?  @unique @default("")
+  userid      Int      @default(1)
+  User        User?    @relation(fields: [userid], references: [id])
 }
 
 model User {
-  id        Int      @id @default(autoincrement())
+  id        Int        @id @default(autoincrement())
   name      String
-  createdAt DateTime @default(now())
+  createdAt DateTime   @default(now())
   sources   Source[]
+  firehoses firehose[]
 }
 
 model Source {
   id     Int    @id @default(autoincrement())
   url    String
-  userid Int
   emoji  String
+  userid Int
   user   User   @relation(fields: [userid], references: [id], map: "Source_userid_fkey")
 }
