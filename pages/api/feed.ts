@@ -4,9 +4,12 @@ import rss from "rss";
 
 const prisma = new PrismaClient();
 
-export default async (req: NextApiRequest, res: NextApiResponse) => {
+const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   try {
     const feedData = await prisma.firehose.findMany({
+      where: {
+        userid: 1, // Only pull from items with userid=1
+      },
       orderBy: {
         postdate: "desc",
       },
@@ -35,3 +38,6 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
     res.status(500).json({ error: "Error fetching data from database" });
   }
 };
+
+
+export default handler;
