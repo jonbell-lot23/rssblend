@@ -1,15 +1,9 @@
 import React, { useEffect, useState } from "react";
-import Lottie from "lottie-react";
-import fireLottie from "../components/fire.json";
 import moment from "moment";
 
 const Feed = () => {
   const [feedData, setFeedData] = useState([]);
   const [isLoading, setIsLoading] = useState(true); // Add a state variable to keep track of loading status
-
-  const LoadingAnimation = () => {
-    return <Lottie animationData={fireLottie} />;
-  };
 
   useEffect(() => {
     setIsLoading(true);
@@ -36,10 +30,7 @@ const Feed = () => {
     <>
       {isLoading ? (
         <div className="flex items-center justify-center w-screen h-screen">
-          <div>
-            <script src="https://unpkg.com/@lottiefiles/lottie-player@latest/dist/lottie-player.js"></script>
-            <LoadingAnimation />
-          </div>
+          <div>Loading...</div>
         </div>
       ) : (
         <>
