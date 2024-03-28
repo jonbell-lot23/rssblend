@@ -1,14 +1,25 @@
-name: Trigger URL
+name: Update
 
 on:
   schedule:
-    - cron: '0 */3 * * *'  # At minute 0 past every 3rd hour.
+    - cron: '* * * * *'
   workflow_dispatch:  # This allows you to manually trigger the action.
 
 jobs:
-  hit-url:
+  update:
     runs-on: ubuntu-latest
 
     steps:
-    - name: Curl request
-      run: curl https://firehose.lot23.com/update
+    - name: Check out code
+      uses: actions/checkout@v2
+
+    - name: Use Node.js
+      uses: actions/setup-node@v2
+      with:
+        node-version: '14'
+
+    - name: Install dependencies
+      run: npm ci
+
+    - name: Run update script
+      run: node scripts/update.mjs
