@@ -22,7 +22,7 @@ const Home = () => {
           </h1>
         </div>
       </header>
-      <Feed />
+      <Feed userid="1" />
     </div>
   );
 };
