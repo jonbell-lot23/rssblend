@@ -46,7 +46,7 @@ const Feed: React.FC<FeedProps> = ({ userid }) => {
           />
           <div className="mx-auto prose">
             <div className="py-4">
-              {feedData.slice(0, 100).map((item, index) => (
+              {feedData.slice(0, 25).map((item, index) => (
                 <React.Fragment key={index}>
                   <div key={index} className="flex p-4 mb-2">
                     <div className="mr-1">{item.emoji ? item.emoji : "❓"}</div>
