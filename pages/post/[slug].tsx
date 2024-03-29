@@ -3,6 +3,9 @@ import React from "react";
 import { GetStaticPaths, GetStaticProps } from "next";
 import { PrismaClient } from "@prisma/client";
 import { getPost } from "../../lib/getPost";
+import { Container } from "../../components/Container";
+
+import { Prose } from "../../components/Prose";
 
 const prisma = new PrismaClient();
 
@@ -45,36 +48,52 @@ const Post = ({ post }) => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      <main>
-        <div className="mx-auto my-32 prose">
-          <div className="py-4">
-            <div className="flex p-4 mb-0 text-xl font-light">
-              <div>
-                <a
-                  href={post.link}
-                  className="text-[#E9496F] text-decoration-none text-truncate break-normal text-3xl font-light leading-none"
+      <Container className="mt-16 lg:mt-32">
+        <div className="xl:relative">
+          <div className="max-w-2xl mx-auto">
+            <article>
+              <header className="flex flex-col">
+                <h1 className="mt-6 text-4xl font-bold tracking-tight text-zinc-800 sm:text-5xl dark:text-zinc-100">
+                  {post.title}
+                </h1>
+                <time
+                  dateTime={post.date}
+                  className="flex items-center order-first text-base text-zinc-400 dark:text-zinc-500"
                 >
-                  {post.title.replace(/<[^>]+>/g, "").trim() !==
-                  post.description.replace(/<[^>]+>/g, "").trim()
-                    ? post.title
-                    : "•"}
-                </a>
-
-                <div className="my-0">
-                  <div className="mb-8 leading-none text-gray-400">
-                    <span>{new Date(post.postdate).toLocaleDateString()}</span>
+                  <span className="h-4 w-0.5 rounded-full bg-zinc-200 dark:bg-zinc-500" />
+                  <span className="ml-3">{post.date}</span>
+                </time>
+              </header>
+              <Prose className="mt-8" data-mdx-content>
+                <div className="py-4">
+                  <div className="flex p-4 mb-2">
+                    <div>
+                      <a
+                        href={post.link}
+                        className="text-[#E9496F] text-decoration-none break-normal text-xl leading-none"
+                      >
+                        {post.title.replace(/<[^>]+>/g, "").trim() !==
+                        post.description.replace(/<[^>]+>/g, "").trim()
+                          ? post.title
+                          : "•"}
+                      </a>
+                      <div className="my-0">
+                        <div className="leading-none text-gray-400">
+                          <span>{post.date}</span>
+                        </div>
+                        <div
+                          className="text-gray-700 overflow-wrap: break-word;"
+                          dangerouslySetInnerHTML={{ __html: post.description }}
+                        />
+                      </div>
+                    </div>
                   </div>
-
-                  <div
-                    className="text-gray-700 overflow-wrap: break-word;"
-                    dangerouslySetInnerHTML={{ __html: post.description }}
-                  />
                 </div>
-              </div>
-            </div>
+              </Prose>
+            </article>
           </div>
         </div>
-      </main>
+      </Container>
     </div>
   );
 };
