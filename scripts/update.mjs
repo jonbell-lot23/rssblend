@@ -68,81 +68,80 @@ const handler = async () => {
       select: { url: true, emoji: true, userid: true },
     });
 
-    console.log("Fetching existing items from the database.");
-    const existingItems = await prisma.firehose.findMany({
-      select: { url: true },
-    });
+    for (let source of sources) {
+      console.log("Fetching existing items from the database.");
+      const existingItems = await prisma.firehose.findMany({
+        where: { userid: source.userid },
+        select: { url: true },
+      });
 
-    const existingUrls = new Set(existingItems.map((item) => item.url));
+      const existingUrls = new Set(existingItems.map((item) => item.url));
 
-    console.log("Processing RSS feeds.");
-    const feedPromises = sources.map((source) =>
-      processFeed(source.url, source.emoji)
-    );
+      console.log("Processing RSS feeds.");
+      const feedItems = await processFeed(source.url, source.emoji);
 
-    const allFeedItems = (await Promise.all(feedPromises)).flat();
-    const newFeedItems = allFeedItems.filter(
-      (item) => !existingUrls.has(item.url)
-    );
+      const newFeedItems = feedItems.filter(
+        (item) => !existingUrls.has(item.url)
+      );
 
-    console.log(`Found ${newFeedItems.length} new feed items.`);
+      console.log(`Found ${newFeedItems.length} new feed items.`);
 
-    for (let item of newFeedItems) {
-      if (existingUrls.has(item.url)) {
-        console.log(`Skipping duplicate item: ${item.url}`);
-        continue;
-      }
-
-      try {
-        // Add this check
-        const existingItem = await prisma.firehose.findUnique({
-          where: { url: item.url },
-        });
-
-        if (existingItem) {
+      for (let item of newFeedItems) {
+        if (existingUrls.has(item.url)) {
           console.log(`Skipping duplicate item: ${item.url}`);
           continue;
         }
 
-        // Get the maximum id from the firehose table
-        const maxId = await prisma.firehose.aggregate({
-          _max: {
-            id: true,
-          },
-        });
+        try {
+          // Add this check
+          const existingItem = await prisma.firehose.findUnique({
+            where: { url: item.url },
+          });
 
-        // Increment the maximum id by one
-        const newId = maxId._max.id ? maxId._max.id + 1 : 1;
+          if (existingItem) {
+            console.log(`Skipping duplicate item: ${item.url}`);
+            continue;
+          }
 
-        await prisma.firehose.create({
-          data: {
-            id: newId,
+          // Get the maximum id from the firehose table
+          const maxId = await prisma.firehose.aggregate({
+            _max: {
+              id: true,
+            },
+          });
+
+          // Increment the maximum id by one
+          const newId = maxId._max.id ? maxId._max.id + 1 : 1;
+
+          await prisma.firehose.create({
+            data: {
+              id: newId,
+              title: item.title,
+              source: item.emoji,
+              url: item.url,
+              description: item.description,
+              postdate: new Date(item.date),
+              slug: generateSlug(),
+              userid: source.userid,
+            },
+          });
+
+          // Add item to RSS feed
+          feed.item({
             title: item.title,
-            source: item.emoji,
             url: item.url,
             description: item.description,
-            postdate: new Date(item.date),
-            slug: generateSlug(),
-            // Add the userid to the data being saved
-            // userid: sources.find(source => source.url === item.feedUrl)?.userid,
-          },
-        });
-
-        // Add item to RSS feed
-        feed.item({
-          title: item.title,
-          url: item.url,
-          description: item.description,
-          date: item.date,
-        });
-        console.log(`Successfully processed item: ${item.url}`);
-      } catch (err) {
-        console.error(
-          "Error while interacting with the database:",
-          err.message
-        );
-        console.error("Data causing the error:", item);
-        console.error("Error details:", err);
+            date: item.date,
+          });
+          console.log(`Successfully processed item: ${item.url}`);
+        } catch (err) {
+          console.error(
+            "Error while interacting with the database:",
+            err.message
+          );
+          console.error("Data causing the error:", item);
+          console.error("Error details:", err);
+        }
       }
     }
 

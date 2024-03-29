@@ -1,13 +1,17 @@
 import React, { useEffect, useState } from "react";
 import moment from "moment";
 
-const Feed = () => {
+interface FeedProps {
+  userid: string | number; // or the type of your userid
+}
+
+const Feed: React.FC<FeedProps> = ({ userid }) => {
   const [feedData, setFeedData] = useState([]);
-  const [isLoading, setIsLoading] = useState(true); // Add a state variable to keep track of loading status
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     setIsLoading(true);
-    fetch("api/getFeedData")
+    fetch(`api/getFeedData?userid=${userid}`)
       .then((response) => response.json())
       .then((data) => {
         const feedData = data.map((item) => {

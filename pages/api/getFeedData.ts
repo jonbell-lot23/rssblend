@@ -3,9 +3,15 @@ import { PrismaClient } from "@prisma/client";
 
 const prisma = new PrismaClient();
 
-export default async (req: NextApiRequest, res: NextApiResponse) => {
+const getFeedData = async (req: NextApiRequest, res: NextApiResponse) => {
   try {
+    // Get the userid from the query parameters
+    const { userid } = req.query;
+
     const feedData = await prisma.firehose.findMany({
+      where: {
+        userid: Number(userid),
+      },
       orderBy: {
         postdate: "desc",
       },
@@ -17,3 +23,5 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
     res.status(500).json({ error: "Error fetching data from database" });
   }
 };
+
+export default getFeedData;
