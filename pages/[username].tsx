@@ -8,7 +8,9 @@ const UserPage = () => {
   const [userid, setUserid] = useState(null);
 
   useEffect(() => {
-    const cleanUsername = username?.replace("@", "");
+    const cleanUsername = Array.isArray(username)
+      ? username[0].replace("@", "")
+      : username?.replace("@", "");
     if (cleanUsername) {
       fetch(`api/getUserid?username=${cleanUsername}`)
         .then((response) => {
