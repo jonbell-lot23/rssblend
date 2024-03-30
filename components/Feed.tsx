@@ -55,7 +55,7 @@ const Feed: React.FC<FeedProps> = ({ userid, username }) => {
             href="http://firehose.lot23.com/api/feed"
           />
           <div className="mx-auto font-light prose">
-            <div className="py-4 break-words bg-red-500">
+            <div className="py-4 break-words">
               <h2 className="text-[#E9496D] font-light">
                 {username}'s firehose
               </h2>
