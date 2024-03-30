@@ -55,8 +55,8 @@ const Feed: React.FC<FeedProps> = ({ userid, username }) => {
             href="http://firehose.lot23.com/api/feed"
           />
           <div className="mx-auto font-light prose">
-            <div className="py-4 break-words">
-              <h2 className="text-[#E9496D] font-light">
+            <div className="py-4 overflow-hidden break-words overflow-ellipsis">
+              <h2 className="font-light text-orange-500">
                 {username}'s firehose
               </h2>
               {feedData.slice(0, 25).map((item, index) => (
