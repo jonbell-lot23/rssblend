@@ -18,7 +18,13 @@ const generateSlug = () => {
 
 const processFeed = async (url, emoji) => {
   console.log(`Processing feed: ${url}`);
-  const rssString = await fetch(url).then((res) => res.text());
+  let rssString;
+  try {
+    rssString = await fetch(url).then((res) => res.text());
+  } catch (err) {
+    console.error(`Error fetching feed ${url}: ${err.message}`);
+    return [];
+  }
   const parser = new RssParser();
   let parsedFeed;
   try {
