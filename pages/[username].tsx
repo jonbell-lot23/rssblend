@@ -29,7 +29,13 @@ const UserPage = () => {
     }
   }, [username]);
 
-  return userid ? <Feed userid={userid} username={username} /> : <div></div>;
+  const cleanUsername = Array.isArray(username) ? username[0] : username;
+
+  return userid ? (
+    <Feed userid={userid} username={cleanUsername} />
+  ) : (
+    <div></div>
+  );
 };
 
 export default UserPage;
