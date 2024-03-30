@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from "react";
 import moment from "moment";
+import Lottie from "lottie-react";
+import fireLottie from "../components/fire.json";
 
 interface FeedProps {
   userid: string | number; // or the type of your userid
@@ -8,6 +10,10 @@ interface FeedProps {
 const Feed: React.FC<FeedProps> = ({ userid }) => {
   const [feedData, setFeedData] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
+
+  const LoadingAnimation = () => {
+    return <Lottie animationData={fireLottie} />;
+  };
 
   useEffect(() => {
     setIsLoading(true);
@@ -34,7 +40,10 @@ const Feed: React.FC<FeedProps> = ({ userid }) => {
     <>
       {isLoading ? (
         <div className="flex items-center justify-center w-screen h-screen">
-          <div>Loading...</div>
+          <div>
+            <script src="https://unpkg.com/@lottiefiles/lottie-player@latest/dist/lottie-player.js"></script>
+            <LoadingAnimation />
+          </div>
         </div>
       ) : (
         <>
