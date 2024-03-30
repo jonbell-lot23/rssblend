@@ -29,7 +29,7 @@ const UserPage = () => {
     }
   }, [username]);
 
-  return userid ? <Feed userid={userid} /> : <div>Loading...</div>;
+  return userid ? <Feed userid={userid} username={username} /> : <div></div>;
 };
 
 export default UserPage;

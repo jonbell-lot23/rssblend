@@ -5,9 +5,10 @@ import fireLottie from "../components/fire.json";
 
 interface FeedProps {
   userid: string | number; // or the type of your userid
+  username: string | null; // added username to the interface
 }
 
-const Feed: React.FC<FeedProps> = ({ userid }) => {
+const Feed: React.FC<FeedProps> = ({ userid, username }) => {
   const [feedData, setFeedData] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
 
@@ -24,7 +25,7 @@ const Feed: React.FC<FeedProps> = ({ userid }) => {
           return {
             title: item.title,
             emoji: item.source,
-            link: `https://firehose.lot23.com/post/${item.slug}`, // Changed link to use slug
+            link: `https://firehose.lot23.com/post/${item.slug}`,
             description: item.description,
             date: item.postdate,
           };
@@ -50,11 +51,14 @@ const Feed: React.FC<FeedProps> = ({ userid }) => {
           <link
             rel="alternate"
             type="application/rss+xml"
-            title="Jon Bell's Firehose"
+            title="Firehose"
             href="http://firehose.lot23.com/api/feed"
           />
-          <div className="mx-auto prose">
+          <div className="mx-auto font-light prose">
             <div className="py-4">
+              <h2 className="text-[#E9496D] font-light">
+                {username}'s firehose
+              </h2>
               {feedData.slice(0, 25).map((item, index) => (
                 <React.Fragment key={index}>
                   <div key={index} className="flex p-4 mb-2">
@@ -62,7 +66,7 @@ const Feed: React.FC<FeedProps> = ({ userid }) => {
                     <div>
                       <a
                         href={item.link}
-                        className="text-[#E9496D] text-decoration-none text-truncate break-normal text-xl leading-none"
+                        className="text-[#E9496D] text-decoration-none text-truncate break-normal text-xl leading-none font-light no-underline hover:underline"
                       >
                         {item.title.replace(/<[^>]+>/g, "").trim() !==
                         item.description.replace(/<[^>]+>/g, "").trim()
