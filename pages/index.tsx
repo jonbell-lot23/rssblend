@@ -7,6 +7,7 @@ const Firehose = () => {
   return (
     <Layout>
       <Head>
+        <meta charSet="UTF-8" />
         <script
           defer
           data-domain="firehose.lot23.com"

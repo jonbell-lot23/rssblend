@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import moment from "moment";
 import Lottie from "lottie-react";
 import fireLottie from "../components/fire.json";
+import he from "he";
 
 interface FeedProps {
   userid: string | number; // or the type of your userid
@@ -68,9 +69,13 @@ const Feed: React.FC<FeedProps> = ({ userid, username }) => {
                         href={item.link}
                         className="text-[#E9496D] text-decoration-none text-truncate break-normal text-xl leading-none font-light no-underline hover:underline"
                       >
-                        {item.title.replace(/<[^>]+>/g, "").trim() !==
-                        item.description.replace(/<[^>]+>/g, "").trim()
-                          ? item.title
+                        {he.decode(
+                          item.title.replace(/<[^>]+>/g, "").trim()
+                        ) !==
+                        he.decode(
+                          item.description.replace(/<[^>]+>/g, "").trim()
+                        )
+                          ? he.decode(item.title)
                           : "•"}
                       </a>
 
