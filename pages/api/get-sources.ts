@@ -1,16 +1,11 @@
 import prisma from '../../lib/prisma';
 import { NextApiRequest, NextApiResponse } from 'next';
 
-
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
-
-  // Ensure username is a string
-  const username = typeof req.query.username === 'string' ? req.query.username : undefined;
-
-  console.log("get-sources");
+  const username = (req.query.userid as string).replace('@', '');
 
   try {
-    if (!username) {
+    if (!username || typeof username !== 'string') {
       return res.status(400).json({ error: "Invalid username" });
     }
 
@@ -19,19 +14,16 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       where: { name: username },
     });
     console.log("getting username: ");
-    console.log(user);
+    console.log(username);
 
     if (!user) {
       return res.status(404).json({ error: "User not found" });
     }
 
-    // Then fetch the sources for the user with id 1
+    // Then fetch the sources for the user
     const sources = await prisma.source.findMany({
-      where: { userid: 1 },
+      where: { userid: user.id },
     });
-
-    
-
 
     res.status(200).json(sources);
   } catch (error) {
