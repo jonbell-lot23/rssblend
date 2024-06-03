@@ -12,7 +12,7 @@ const prisma = new PrismaClient();
 export const getStaticPaths: GetStaticPaths = async () => {
   const posts: { slug: string }[] =
     await prisma.$queryRaw`SELECT slug FROM "firehose";`;
-  const paths = posts.map((post) => ({ params: { slug: post.slug } }));
+  const paths = [];
 
   // Log the paths
   console.log(paths);
