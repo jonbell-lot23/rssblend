@@ -59,7 +59,9 @@ const Sidebar: React.FC = () => {
         <ul>
           {sources.map((source) => (
             <li key={source.id}>
-              <a href={`/@jon/${source.id}`}>{extractSubdomain(source.url)}</a>
+              <a href={`/${router.query.username}/${source.id}`}>
+                {extractSubdomain(source.url)}
+              </a>
             </li>
           ))}
         </ul>
