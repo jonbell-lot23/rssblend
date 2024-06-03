@@ -1,6 +1,6 @@
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
-import Feed from "../components/Feed";
+import Feed from "../../components/Feed";
 
 const UserPage = () => {
   const router = useRouter();
