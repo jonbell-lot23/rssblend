@@ -39,7 +39,11 @@ const SourcePage = () => {
   // Render the Feed component with the userid and sourceId
   // Assuming Feed component can accept a sourceId prop to filter the content
   return userid && !isNaN(sourceIdInt) ? (
-    <Feed userid={userid} username={username} sourceId={sourceIdInt} />
+    <Feed
+      userid={userid}
+      username={Array.isArray(username) ? username[0] : username}
+      sourceId={sourceIdInt}
+    />
   ) : (
     <div>Loading...</div>
   );

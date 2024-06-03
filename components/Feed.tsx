@@ -8,9 +8,10 @@ import Sidebar from "./Sidebar"; // Import the Sidebar component
 interface FeedProps {
   userid: string | number; // or the type of your userid
   username: string | null; // added username to the interface
+  sourceId?: number; // added sourceId to the interface
 }
 
-const Feed: React.FC<FeedProps> = ({ userid, username }) => {
+const Feed: React.FC<FeedProps> = ({ userid, username, sourceId }) => {
   const [feedData, setFeedData] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
 
@@ -24,8 +25,16 @@ const Feed: React.FC<FeedProps> = ({ userid, username }) => {
 
   useEffect(() => {
     setIsLoading(true);
-    fetch(`api/getFeedData?userid=${userid}`)
-      .then((response) => response.json())
+    const url = sourceId
+      ? `../api/getFeedData?userid=${userid}&sourceId=${sourceId}`
+      : `../api/getFeedData?userid=${userid}`;
+    fetch(url)
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        return response.json();
+      })
       .then((data) => {
         const feedData = data.map((item) => {
           return {
@@ -41,7 +50,7 @@ const Feed: React.FC<FeedProps> = ({ userid, username }) => {
         setFeedData(feedData);
         setIsLoading(false);
       });
-  }, []);
+  }, [userid, sourceId]);
 
   return (
     <div className="container">

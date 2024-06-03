@@ -14,10 +14,12 @@ model firehose {
   url         String   @unique
   description String?
   postdate    DateTime
-  source      String?
   slug        String?  @unique @default("")
   userid      Int      @default(1)
   User        User?    @relation(fields: [userid], references: [id])
+  source      String? // Keep the emoji field
+  sourceId    Int? // Add this line to create a foreign key for the Source relation
+  Source      Source?  @relation(fields: [sourceId], references: [id])
 }
 
 model User {
@@ -29,9 +31,10 @@ model User {
 }
 
 model Source {
-  id     Int    @id @default(autoincrement())
-  url    String
-  emoji  String
-  userid Int
-  user   User   @relation(fields: [userid], references: [id], map: "Source_userid_fkey")
+  id        Int        @id @default(autoincrement())
+  url       String
+  emoji     String
+  userid    Int
+  user      User       @relation(fields: [userid], references: [id])
+  firehoses firehose[] // This line establishes the reverse relation
 }
