@@ -34,7 +34,9 @@ const SourcePage = () => {
   }, [username]);
 
   // Ensure sourceId is parsed as an integer
-  const sourceIdInt = parseInt(sourceId, 10);
+  const sourceIdInt = Array.isArray(sourceId)
+    ? parseInt(sourceId[0], 10)
+    : parseInt(sourceId, 10);
 
   // Render the Feed component with the userid and sourceId
   // Assuming Feed component can accept a sourceId prop to filter the content

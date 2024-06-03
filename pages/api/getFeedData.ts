@@ -8,7 +8,7 @@ const getFeedData = async (req: NextApiRequest, res: NextApiResponse) => {
     const { userid, sourceId } = req.query;
 
     // Ensure sourceId is defined and is a number
-    const numericSourceId = sourceId ? parseInt(sourceId, 10) : null;
+    const numericSourceId = Array.isArray(sourceId) ? parseInt(sourceId[0], 10) : parseInt(sourceId, 10);
 
     // If sourceId is provided but is not a valid number, return an error
     if (sourceId && isNaN(numericSourceId)) {

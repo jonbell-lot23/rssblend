@@ -59,7 +59,6 @@ const Feed: React.FC<FeedProps> = ({ userid, username, sourceId }) => {
         {isLoading ? (
           <div className="flex items-center justify-center w-full h-screen">
             <div>
-              <script src="https://unpkg.com/@lottiefiles/lottie-player@latest/dist/lottie-player.js"></script>
               <LoadingAnimation />
             </div>
           </div>
@@ -74,7 +73,7 @@ const Feed: React.FC<FeedProps> = ({ userid, username, sourceId }) => {
             <div className="mx-auto font-light prose">
               <div className="py-4 overflow-hidden break-words overflow-ellipsis">
                 <h2 className="text-[#E9496D] font-light">
-                  {username}'s firehose
+                  {username}&apos;s firehose
                 </h2>
                 {feedData.slice(0, 25).map((item, index) => (
                   <React.Fragment key={index}>
