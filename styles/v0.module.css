@@ -22,8 +22,8 @@
   flex: 0 0 365px;
   background: url("/sidebar.png") no-repeat center bottom;
   background-size: 100% auto;
-  display: none; /* Hide sidebar on mobile */
-  height: 100%; /* Ensure the sidebar takes the full height */
+  display: none;
+  height: 100%;
 }
 
 .content {
@@ -31,8 +31,8 @@
   flex-direction: column;
   flex: 1;
   padding: 40px;
-  width: 100%; /* Full width on mobile */
-  overflow-y: auto; /* Enable vertical scrolling within the content */
+  width: 100%;
+  overflow-y: auto;
 }
 
 .content a {
@@ -55,16 +55,16 @@
 
 .learnMore {
   margin-top: 40px;
-  width: 100%; /* Full width on mobile */
+  width: 100%;
 }
 
 /* Media query for larger screens */
 @media (min-width: 768px) {
   .sidebar {
-    display: block; /* Show sidebar on larger screens */
+    display: block;
   }
   .content,
   .learnMore {
-    width: 480px; /* Set width for larger screens */
+    width: 480px;
   }
 }

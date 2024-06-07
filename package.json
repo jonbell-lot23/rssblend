@@ -2,10 +2,10 @@
   "name": "Firehose",
   "private": true,
   "scripts": {
-    "dev": "next dev",
-    "build": "next build",
-    "start": "next start",
-    "lint": "next lint"
+    "dev": "bun run next dev",
+    "build": "bun run next build",
+    "start": "bun run next start",
+    "lint": "bun run next lint"
   },
   "dependencies": {
     "@mdx-js/react": "^3.0.1",
@@ -16,7 +16,6 @@
     "clsx": "^2.1.0",
     "date-fns": "^3.5.0",
     "dotenv": "^16.4.5",
-    "fs": "^0.0.1-security",
     "he": "^1.2.0",
     "json-loader": "^0.5.7",
     "lottie-react": "^2.4.0",
