@@ -1,0 +1,70 @@
+.firehose {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  height: 100vh; /* Ensure the container takes the full viewport height */
+  overflow: hidden;
+  background-color: #f15f33;
+  font-size: 24px;
+  color: #f6f1dc;
+  line-height: 120%;
+  overflow-y: auto; /* Enable vertical scrolling */
+}
+
+.headerContent h1 {
+  font-size: 64px;
+  font-weight: bold;
+  margin-top: 0;
+  line-height: 100%;
+}
+
+.sidebar {
+  flex: 0 0 365px;
+  background: url("/sidebar.png") no-repeat center bottom;
+  background-size: 100% auto;
+  display: none;
+  height: 100%;
+}
+
+.content {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  padding: 40px;
+  width: 100%;
+  overflow-y: auto;
+}
+
+.content a {
+  text-decoration: underline;
+}
+
+.content h2 {
+  font-size: 32px;
+  font-weight: bold;
+}
+
+.column {
+  margin-top: 40px;
+}
+
+.column p {
+  padding-left: 40px;
+  padding-top: 12px;
+}
+
+.learnMore {
+  margin-top: 40px;
+  width: 100%;
+}
+
+/* Media query for larger screens */
+@media (min-width: 768px) {
+  .sidebar {
+    display: block;
+  }
+  .content,
+  .learnMore {
+    width: 480px;
+  }
+}

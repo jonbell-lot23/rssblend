@@ -1,6 +1,6 @@
 import React from "react";
 import Head from "next/head";
-import styles from "@/styles/v0.module.css";
+import styles from "@/styles/teaser.module.css";
 import { Layout } from "@/components/Layout";
 
 const Firehose = () => {

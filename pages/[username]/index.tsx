@@ -1,7 +1,7 @@
 "use client";
 
-import { useState } from "react";
-import Link from "next/link";
+import { useState, useEffect } from "react";
+import { useRouter } from "next/router";
 import { Input } from "@/components/ui/input";
 import Sidebar from "@/components/Sidebar";
 import {
@@ -17,6 +17,34 @@ import { Button } from "@/components/ui/button";
 
 export default function Component() {
   const [showSourcesMenu, setShowSourcesMenu] = useState(false);
+  const router = useRouter();
+  const { username } = router.query;
+  const [userid, setUserid] = useState(null);
+
+  useEffect(() => {
+    const cleanUsername = Array.isArray(username)
+      ? username[0].replace("@", "")
+      : username?.replace("@", "");
+    if (cleanUsername) {
+      fetch(`api/getUserid?username=${cleanUsername}`)
+        .then((response) => {
+          if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+          }
+          return response.json();
+        })
+        .then((data) => {
+          if (!data.userid) {
+            throw new Error("No userid returned from API");
+          }
+          setUserid(data.userid);
+        })
+        .catch((error) => console.error("Error:", error));
+    }
+  }, [username]);
+
+  const cleanUsername = Array.isArray(username) ? username[0] : username;
+
   return (
     <div className="min-h-screen w-full overflow-hidden">
       <header className="flex h-14 lg:h-[60px] items-center gap-4 border-b bg-gray-100/40 px-6 dark:bg-gray-800/40">
@@ -80,7 +108,7 @@ export default function Component() {
         </aside>
         <main className="flex-1 p-6">
           <div className="space-y-4">
-            <Feed userid="1" username="jon" />
+            {userid && <Feed userid={userid} username={cleanUsername} />}
           </div>
         </main>
       </div>
