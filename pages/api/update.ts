@@ -2,9 +2,8 @@ import { NextApiRequest, NextApiResponse } from "next";
 import rss from "rss";
 import fetch from "node-fetch";
 import RssParser from "rss-parser";
-import { PrismaClient } from "@prisma/client";
+import prisma from '@/lib/prisma';
 
-const prisma = new PrismaClient();
 
 const generateSlug = () => {
   return Math.random().toString(36).substr(2, 4) + '-' + Math.random().toString(36).substr(2, 4);

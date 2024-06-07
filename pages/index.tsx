@@ -1,7 +1,7 @@
 import React from "react";
 import Head from "next/head";
-import styles from "../styles/v0.module.css";
-import { Layout } from "../components/Layout";
+import styles from "@/styles/v0.module.css";
+import { Layout } from "@/components/Layout";
 
 const Firehose = () => {
   return (
