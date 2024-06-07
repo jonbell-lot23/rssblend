@@ -3,7 +3,6 @@ import moment from "moment";
 import Lottie from "lottie-react";
 import fireLottie from "../components/fire.json";
 import he from "he";
-import Sidebar from "./Sidebar"; // Import the Sidebar component
 
 interface FeedProps {
   userid: string | number; // or the type of your userid
@@ -54,7 +53,6 @@ const Feed: React.FC<FeedProps> = ({ userid, username, sourceId }) => {
 
   return (
     <div className="container">
-      <Sidebar />
       <div className="main-content">
         {isLoading ? (
           <div className="flex items-center justify-center w-full h-screen">
@@ -72,9 +70,6 @@ const Feed: React.FC<FeedProps> = ({ userid, username, sourceId }) => {
             />
             <div className="mx-auto font-light prose">
               <div className="py-4 overflow-hidden break-words overflow-ellipsis">
-                <h2 className="text-[#E9496D] font-light">
-                  {username}&apos;s firehose
-                </h2>
                 {feedData.slice(0, 25).map((item, index) => (
                   <React.Fragment key={index}>
                     <div key={index} className="flex p-4 mb-2">

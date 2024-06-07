@@ -13,8 +13,12 @@
     "moduleResolution": "node",
     "resolveJsonModule": true,
     "isolatedModules": true,
-    "jsx": "preserve"
+    "jsx": "preserve",
+    "paths": {
+      "@/components/*": ["components/*"],
+    }
   },
+  
   "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", "scripts/update.mjs", "pages/Pretty.mdx"],
   "exclude": ["node_modules"]
 }

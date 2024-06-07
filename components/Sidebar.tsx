@@ -53,8 +53,7 @@ const Sidebar: React.FC = () => {
   };
 
   return (
-    <div className="w-64 border-r border-[#f4f4f4] p-5 h-screen sticky top-1 flex flex-col justify-start hidden sm:block pt-20">
-      <h2 className="text-xl font-light mb-4">Sources</h2>
+    <div className="w-64 p-2 h-screen sticky top-1 flex flex-col justify-start hidden sm:block">
       <nav>
         <ul>
           {sources.map((source) => (

@@ -1,0 +1,37 @@
+.container {
+  width: 70%;
+  margin: 0 auto;
+}
+
+.bouquetList {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-top: 20px;
+}
+.bouquet {
+  display: flex;
+  gap: 20px;
+  padding: 10px;
+  margin: 0 20px;
+  border-radius: 10px;
+}
+.bouquetDescription {
+  flex: 1;
+  font-size: 18px;
+}
+.textFieldWrapper {
+  display: flex;
+  justify-content: center;
+  margin-top: 40px;
+}
+.textField {
+  width: 100%;
+  height: 80px;
+  padding: 20px;
+  font-size: 24px;
+  text-align: left;
+  border-radius: 20px;
+  border: none;
+  box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.1);
+}
