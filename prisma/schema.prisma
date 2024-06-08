@@ -11,7 +11,7 @@ datasource db {
 model firehose {
   id          Int      @id @default(autoincrement())
   title       String
-  url         String // Removed the @unique constraint
+  url         String
   description String?
   postdate    DateTime
   slug        String?  @unique @default("")
