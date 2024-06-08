@@ -4,7 +4,9 @@ dotenv.config();
 import rss from "rss";
 import fetch from "node-fetch";
 import RssParser from "rss-parser";
-import prisma from "@/lib/prisma";
+import { PrismaClient } from "@prisma/client";
+
+const prisma = new PrismaClient();
 
 const generateSlug = () => {
   return (
