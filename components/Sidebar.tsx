@@ -52,13 +52,25 @@ const Sidebar: React.FC = () => {
     return match ? match[1] : url;
   };
 
+  // Function to determine if the source is the active one based on the current route
+  const isActive = (sourceId) => {
+    // Assuming the URL structure is /username/sourceId
+    const [, , currentSourceId] = router.asPath.split("/");
+    return currentSourceId === sourceId.toString();
+  };
+
   return (
-    <div className="w-64 p-2 h-screen sticky top-1 flex flex-col justify-start hidden sm:block">
+    <div className="w-72 p-2 h-screen sticky top-1 flex flex-col justify-start hidden sm:block">
       <nav>
         <ul>
           {sources.map((source) => (
             <li key={source.id}>
-              <a href={`/${router.query.username}/${source.id}`}>
+              <a
+                href={`/${router.query.username}/${source.id}`}
+                className={`py-1 px-3 rounded-xl ${
+                  isActive(source.id) ? "bg-gray-200" : "hover:bg-gray-100"
+                }`}
+              >
                 {extractSubdomain(source.url)}
               </a>
             </li>

@@ -101,7 +101,7 @@ export default function Component() {
         </div>
       )}
       <div className="flex">
-        <aside className="hidden lg:block w-64 border-r bg-gray-100/40 dark:bg-gray-800/40">
+        <aside className="hidden lg:block w-72 border-r bg-gray-100/40 dark:bg-gray-800/40">
           <nav className="flex flex-col gap-2 p-4">
             <Sidebar />
           </nav>
