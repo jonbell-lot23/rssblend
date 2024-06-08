@@ -99,29 +99,18 @@ const handler = async () => {
         }
 
         try {
-          // Add this check
-          const existingItem = await prisma.firehose.findUnique({
-            where: { url: item.url },
+          // Get the sourceId from the Source table
+          const sourceEntry = await prisma.source.findFirst({
+            where: { url: item.feedUrl },
+            select: { id: true },
           });
 
-          if (existingItem) {
-            console.log(`Skipping duplicate item: ${item.url}`);
-            continue;
-          }
+          // Check if source exists and get the sourceId
+          const sourceId = sourceEntry ? sourceEntry.id : null;
 
-          // Get the maximum id from the firehose table
-          const maxId = await prisma.firehose.aggregate({
-            _max: {
-              id: true,
-            },
-          });
-
-          // Increment the maximum id by one
-          const newId = maxId._max.id ? maxId._max.id + 1 : 1;
-
+          // Now include the sourceId in the data object
           await prisma.firehose.create({
             data: {
-              id: newId,
               title: item.title,
               source: item.emoji,
               url: item.url,
@@ -129,6 +118,7 @@ const handler = async () => {
               postdate: new Date(item.date),
               slug: generateSlug(),
               userid: source.userid,
+              sourceId: sourceId, // Add this line
             },
           });
 

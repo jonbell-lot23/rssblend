@@ -11,14 +11,14 @@ datasource db {
 model firehose {
   id          Int      @id @default(autoincrement())
   title       String
-  url         String   @unique
+  url         String // Removed the @unique constraint
   description String?
   postdate    DateTime
   slug        String?  @unique @default("")
   userid      Int      @default(1)
   User        User?    @relation(fields: [userid], references: [id])
   source      String? // Keep the emoji field
-  sourceId    Int? // Add this line to create a foreign key for the Source relation
+  sourceId    Int? // Foreign key for the Source relation
   Source      Source?  @relation(fields: [sourceId], references: [id])
 }
 
