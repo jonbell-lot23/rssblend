@@ -77,8 +77,8 @@ const Firehose = () => {
                 <h2>Follow along</h2>
               </div>
               <p>
-                Firehose is currently a personal project for me, Jon Bell. I'll
-                provide a link soon.
+                Firehose is currently a personal project for me, Jon Bell.
+                I&apos;ll provide a link soon.
               </p>
             </div>
             <div className={styles.column}>
@@ -101,8 +101,8 @@ const Firehose = () => {
                 <h2>Share the love</h2>
               </div>
               <p>
-                If you think this is a fun concept, I'd love to hear from you!
-                Send me an email at{" "}
+                If you think this is a fun concept, I&apos;d love to hear from
+                you! Send me an email at{" "}
                 <a href="mailto:jb@lot23.com">jb@lot23.com</a> and make my day.
               </p>
             </div>

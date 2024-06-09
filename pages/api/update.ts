@@ -84,7 +84,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 
       try {
         // Add this check
-        const existingItem = await prisma.firehose.findUnique({
+        const existingItem = await prisma.firehose.findFirst({
           where: { url: item.url },
         });
     
