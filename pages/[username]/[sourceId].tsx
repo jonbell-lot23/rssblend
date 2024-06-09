@@ -1,6 +1,8 @@
 import { useState, useEffect } from "react";
 import { useRouter } from "next/router";
 import { Input } from "@/components/ui/input";
+import Image from "next/image"; // Add this import at the top of your file
+
 import Sidebar from "@/components/Sidebar";
 import {
   DropdownMenu,
@@ -108,10 +110,10 @@ const SourcePage = () => {
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
               <Button variant="ghost" size="icon" className="rounded-full">
-                <img
+                <Image
                   src="/placeholder.svg"
-                  width="32"
-                  height="32"
+                  width={32}
+                  height={32}
                   className="rounded-full"
                   alt="Avatar"
                 />

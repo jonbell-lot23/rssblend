@@ -5,7 +5,7 @@ const Sidebar: React.FC = () => {
   const [sources, setSources] = useState([]);
   const router = useRouter();
 
-  console.log("Router query:", router.query); // This will log the entire query string object
+  console.log("Router query:", router.query);
 
   useEffect(() => {
     const fetchSources = async () => {
