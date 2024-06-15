@@ -34,29 +34,29 @@ const CreatePage: React.FC = () => {
   };
 
   const handleSaveFeed = async () => {
-    const guid = uuidv4(); // This generates a random GUID
-    const urls = rssUrl
-      .split(",")
-      .map((url) => url.trim())
-      .filter((url) => url);
+    const urls = feedItems.map((item) => item.link); // Assuming each feed item has a 'link' property
 
-    // Here you would update your schema and save the GUID with the URLs
-    // This is a placeholder for your database save logic
+    // Check if there are URLs to save
+    if (urls.length === 0) {
+      console.error("No URLs to save.");
+      return;
+    }
+
     try {
-      const res = await fetch("/api/save-feed", {
+      const response = await fetch("/api/save-feed", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ guid, urls }),
+        body: JSON.stringify({ urls }),
       });
 
-      if (!res.ok) {
-        throw new Error(`Error saving feed: ${res.status}`);
+      if (!response.ok) {
+        throw new Error(`Error saving feed: ${response.status}`);
       }
 
-      // Redirect to the new page using the GUID
-      window.location.href = `/f/${guid}`;
+      const { guid } = await response.json(); // Get the GUID from the server response
+      window.location.href = `/f/${guid}`; // Redirect to the new page using the GUID
     } catch (error) {
       console.error("Error saving feed data:", error);
     }
