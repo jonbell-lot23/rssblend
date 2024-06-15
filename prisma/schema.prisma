@@ -14,12 +14,12 @@ model firehose {
   url         String
   description String?
   postdate    DateTime
+  source      String?
   slug        String?  @unique @default("")
-  userid      Int      @default(1)
-  User        User?    @relation(fields: [userid], references: [id])
-  source      String? // Keep the emoji field
-  sourceId    Int? // Foreign key for the Source relation
+  userid      Int?     @default(1)
+  sourceId    Int?
   Source      Source?  @relation(fields: [sourceId], references: [id])
+  User        User?    @relation(fields: [userid], references: [id])
 }
 
 model User {
@@ -36,5 +36,5 @@ model Source {
   emoji     String
   userid    Int
   user      User       @relation(fields: [userid], references: [id])
-  firehoses firehose[] // This line establishes the reverse relation
+  firehoses firehose[]
 }
