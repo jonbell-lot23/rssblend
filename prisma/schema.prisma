@@ -8,6 +8,23 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+model Source {
+  id       Int        @id @default(autoincrement())
+  url      String
+  emoji    String
+  userid   Int
+  User     User       @relation(fields: [userid], references: [id])
+  firehose firehose[]
+}
+
+model User {
+  id        Int        @id @default(autoincrement())
+  name      String     @unique
+  createdAt DateTime   @default(now())
+  Source    Source[]
+  firehose  firehose[]
+}
+
 model firehose {
   id          Int      @id @default(autoincrement())
   title       String
@@ -16,25 +33,8 @@ model firehose {
   postdate    DateTime
   source      String?
   slug        String?  @unique @default("")
-  userid      Int?     @default(1)
+  userid      Int      @default(1)
   sourceId    Int?
   Source      Source?  @relation(fields: [sourceId], references: [id])
-  User        User?    @relation(fields: [userid], references: [id])
-}
-
-model User {
-  id        Int        @id @default(autoincrement())
-  name      String     @unique
-  createdAt DateTime   @default(now())
-  sources   Source[]
-  firehoses firehose[]
-}
-
-model Source {
-  id        Int        @id @default(autoincrement())
-  url       String
-  emoji     String
-  userid    Int
-  user      User       @relation(fields: [userid], references: [id])
-  firehoses firehose[]
+  User        User     @relation(fields: [userid], references: [id], onDelete: SetNull)
 }
