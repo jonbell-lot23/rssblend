@@ -9,18 +9,22 @@ export default async function handler(req: Request) {
   const title = searchParams.get("title") || "Default Title";
   const pullQuote = searchParams.get("quote") || "Default Pull Quote";
 
-  // Load the font
-  const loraRegular = await fetch(
-    new URL(
-      "https://fonts.gstatic.com/s/lora/v32/0QI6MX1D_JOuGQbT0gvTJPa787weuxJBkqt8ndeY9Z6JTg.woff"
-    )
-  ).then((res) => res.arrayBuffer());
+  // Load the font with error handling
+  const fetchFont = async (url: string) => {
+    const response = await fetch(url);
+    if (!response.ok) {
+      throw new Error(`Failed to fetch font: ${response.statusText}`);
+    }
+    const contentType = response.headers.get("content-type");
+    if (!contentType || !contentType.includes("font")) {
+      throw new Error("Fetched resource is not a valid font file");
+    }
+    return response.arrayBuffer();
+  };
 
-  const loraBold = await fetch(
-    new URL(
-      "https://fonts.gstatic.com/s/lora/v32/0QI6MX1D_JOuGQbT0gvTJPa787z5uxJBkqt8ndeY9Z6JTg.woff"
-    )
-  ).then((res) => res.arrayBuffer());
+  const loraRegular = await fetchFont(
+    "https://fonts.gstatic.com/s/lora/v32/0QI6MX1D_JOuGQbT0gvTJPa787weuxJBkqt8ndeY9Z6JTg.woff"
+  );
 
   const imageResponse = new ImageResponse(
     (
@@ -50,6 +54,14 @@ export default async function handler(req: Request) {
     {
       width: 1200,
       height: 630,
+      fonts: [
+        {
+          name: "Lora",
+          data: loraRegular,
+          style: "normal",
+          weight: 400,
+        },
+      ],
     }
   );
 
