@@ -46,7 +46,13 @@ const Post = ({ post }) => {
           data-domain="firehose.lot23.com"
           src="https://plausible.io/js/script.js"
         ></script>
-        <title>{post.name} | Firehose</title>
+        <title>{post.title} | Firehose</title>
+        <meta
+          property="og:image"
+          content={`http://localhost:3002/api/og-image?title=${encodeURIComponent(
+            post.title
+          )}`}
+        />
         <link rel="icon" href="/favicon.ico" />
       </Head>
 

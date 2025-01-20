@@ -15,19 +15,29 @@ export default async function handler(req: Request) {
         style={{
           display: "flex",
           flexDirection: "column",
-          alignItems: "center",
-          justifyContent: "center",
+          justifyContent: "space-between",
           width: "1200px",
           height: "630px",
-          backgroundColor: "#ffffff",
-          color: "#000000",
+          backgroundColor: "#a23e48",
+          color: "#ffffff",
           fontFamily: "Arial, sans-serif",
-          padding: "20px",
-          textAlign: "center",
+          padding: "40px",
+          textAlign: "left",
+          borderRadius: "20px",
         }}
       >
-        <h1 style={{ fontSize: "48px", marginBottom: "20px" }}>{title}</h1>
-        <p style={{ fontSize: "24px", fontStyle: "italic" }}>{pullQuote}</p>
+        <div style={{ fontSize: "100px", fontWeight: "bold" }}>●</div>
+        <div style={{ display: "flex", flexDirection: "column" }}>
+          <p style={{ fontSize: "36px", fontWeight: "bold" }}>
+            Placeholder Title
+          </p>
+          <p style={{ fontSize: "24px", marginTop: "10px" }}>
+            This is a placeholder quote for the image.
+          </p>
+        </div>
+        <div style={{ fontSize: "20px", fontWeight: "bold" }}>
+          Placeholder Footer
+        </div>
       </div>
     ),
     {
