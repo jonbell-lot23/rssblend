@@ -6,8 +6,8 @@ export const config = {
 
 export default async function handler(req: Request) {
   const { searchParams } = new URL(req.url, `http://${req.headers["host"]}`);
-  const title = searchParams.get("title") || "Default Title";
-  const pullQuote = searchParams.get("quote") || "Default Pull Quote";
+  const title = searchParams.get("title") || "";
+  const pullQuote = searchParams.get("quote") || "";
 
   // Load the font with error handling
   const fetchFont = async (url: string) => {
