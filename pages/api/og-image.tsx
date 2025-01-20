@@ -37,9 +37,9 @@ export default async function handler(req: Request) {
           height: "630px",
           backgroundColor: "#101010",
           color: "#efefef",
-          padding: "40px",
+          padding: "40px 40px 40px 80px", // Adjusted left padding
           textAlign: "left",
-          borderRadius: "20px",
+          borderRadius: "12px",
         }}
       >
         <div style={{ display: "flex", flexDirection: "column" }}>
