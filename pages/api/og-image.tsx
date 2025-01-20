@@ -4,7 +4,7 @@ export const config = {
   runtime: "experimental-edge",
 };
 
-export default async function handler(req: Request, res: any) {
+export default async function handler(req: Request) {
   const { searchParams } = new URL(req.url, `http://${req.headers["host"]}`);
   const title = searchParams.get("title") || "Default Title";
   const pullQuote = searchParams.get("quote") || "Default Pull Quote";
@@ -36,5 +36,5 @@ export default async function handler(req: Request, res: any) {
     }
   );
 
-  res.status(200).send(imageResponse);
+  return imageResponse;
 }
