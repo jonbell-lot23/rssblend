@@ -1,5 +1,6 @@
 import { ImageResponse } from "@vercel/og";
 import { getFirstPost } from "../../lib/getPost";
+import he from "he";
 
 export const config = {
   runtime: "experimental-edge",
@@ -8,8 +9,10 @@ export const config = {
 export default async function handler(req: Request) {
   const { searchParams } = new URL(req.url, `http://${req.headers["host"]}`);
   const content = searchParams.get("content") || "";
+  const decodedContent = he.decode(content);
+
   const truncatedContent =
-    content
+    decodedContent
       .split(" ")
       .reduce((acc, word) => {
         if (acc.length + word.length + 1 <= 290) {
