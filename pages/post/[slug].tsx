@@ -49,7 +49,7 @@ const Post = ({ post }) => {
         <title>{post.title} | Firehose</title>
         <meta
           property="og:image"
-          content={`/api/og-image?content=${encodeURIComponent(
+          content={`https://firehose.lot23.com/api/og-image?content=${encodeURIComponent(
             post.description.replace(/<\/?[^>]+(>|$)/g, "").substring(0, 390)
           )}`}
         />
