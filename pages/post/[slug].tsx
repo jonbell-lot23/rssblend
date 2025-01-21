@@ -49,8 +49,8 @@ const Post = ({ post }) => {
         <title>{post.title} | Firehose</title>
         <meta
           property="og:image"
-          content={`http://localhost:3002/api/og-image?title=${encodeURIComponent(
-            post.title
+          content={`http://localhost:3002/api/og-image?content=${encodeURIComponent(
+            post.description.replace(/<\/?[^>]+(>|$)/g, "").substring(0, 390)
           )}`}
         />
         <link rel="icon" href="/favicon.ico" />
@@ -134,7 +134,7 @@ const Post = ({ post }) => {
         </div>
       </Container>
 
-      <style jsx>{`
+      <style>{`
         @keyframes slideDown {
           from {
             transform: translateY(-100%);
