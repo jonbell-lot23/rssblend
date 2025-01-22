@@ -49,9 +49,10 @@ const Post = ({ post }) => {
         <title>{post.title} | Firehose</title>
         <meta
           property="og:image"
-          content={`http://firehose.lot23.com/api/og-image?content=${encodeURIComponent(
-            post.description.replace(/<\/?[^>]+(>|$)/g, "").substring(0, 390)
-          )}`}
+          content={`http://firehose.lot23.com/api/og-image?content=${post.description
+            .replace(/<\/?[^>]+(>|$)/g, "")
+            .replace(/&#x27;/g, "'")
+            .substring(0, 290)}`}
         />
         <link rel="icon" href="/favicon.ico" />
       </Head>
