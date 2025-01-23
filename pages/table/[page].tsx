@@ -1,6 +1,7 @@
 import { DataTable } from "@/components/data-table";
 import ReactPaginate from "react-paginate";
 import { useState, useEffect } from "react";
+import { useRouter } from "next/router";
 
 function Avatar({ author }) {
   const colors = {
@@ -36,47 +37,46 @@ function filterByAuthor(author) {
 }
 
 export default function TablePage() {
+  const router = useRouter();
+  const { page, authorid } = router.query;
   const [currentPage, setCurrentPage] = useState(0);
+
+  useEffect(() => {
+    if (page) {
+      setCurrentPage(parseInt(page as string, 10) - 1);
+    }
+  }, [page]);
   const [posts, setPosts] = useState([]);
   const [totalPosts, setTotalPosts] = useState(0);
 
   useEffect(() => {
     const fetchPosts = async () => {
-      const offset = currentPage * 25;
-      const response = await fetch(`/api/getPosts?offset=${offset}&limit=25`);
+      const offset = currentPage === 0 ? 0 : currentPage * 25;
+      const limit = currentPage === 0 ? 100 : 25;
+      const authorQuery = authorid ? `&authorid=${authorid}` : "";
+      const response = await fetch(
+        `/api/getPosts?offset=${offset}&limit=${limit}${authorQuery}`
+      );
       const data = await response.json();
       setPosts(data.posts || []);
       setTotalPosts(data.total || 0);
     };
 
     fetchPosts();
-  }, [currentPage]);
+  }, [authorid, currentPage]);
 
   const handlePageClick = (data) => {
     setCurrentPage(data.selected);
+    router.push(`/table/${data.selected + 1}`);
   };
 
-  const postsPerPage = 10; // Show 10 items per page
+  const postsPerPage = currentPage === 0 ? 100 : 10;
   const offset = currentPage * postsPerPage;
   const currentPosts = posts ? posts.slice(offset, offset + postsPerPage) : [];
 
   return (
     <div className="container mx-auto py-10 flex flex-col justify-between min-h-screen">
-      <DataTable posts={currentPosts} /> {/* Render DataTable once */}
-      <div className="flex justify-center mt-4">
-        <ReactPaginate
-          previousLabel={"previous"}
-          nextLabel={"next"}
-          breakLabel={"..."}
-          breakClassName={"break-me"}
-          pageCount={Math.ceil(totalPosts / 25)}
-          marginPagesDisplayed={2}
-          pageRangeDisplayed={5}
-          onPageChange={handlePageClick}
-          containerClassName={"pagination"}
-          activeClassName={"active"}
-        />
-      </div>
+      <DataTable posts={currentPosts} />
     </div>
   );
 }

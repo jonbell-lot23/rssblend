@@ -19,6 +19,8 @@ interface Post {
   slug: string | null;
   Source: {
     emoji: string;
+    name: string;
+    userid: number;
   } | null;
 }
 
@@ -34,19 +36,23 @@ export function DataTable({ posts }: DataTableProps) {
           <TableHead>title & url</TableHead>
           <TableHead>description</TableHead>
           <TableHead>postdate</TableHead>
-          <TableHead>slug</TableHead>
         </TableRow>
       </TableHeader>
       <TableBody>
         {posts.map((post) => (
           <TableRow key={post.url} className="even:bg-muted/50">
-            <TableCell className="max-w-[400px]">
-              <a
-                href={post.url}
-                className="text-blue-600 hover:underline truncate block"
-              >
-                {post.title}
-              </a>
+            <TableCell>
+              <div className="flex items-center">
+                <a href={`/table/${post.Source?.userid}/1`}>
+                  <div className="w-4 h-4 bg-black rounded-full mr-2"></div>
+                </a>
+                <a
+                  href={`/post/${post.slug}`}
+                  className="text-blue-600 hover:underline truncate block"
+                >
+                  {post.title}
+                </a>
+              </div>
             </TableCell>
             <TableCell className="max-w-[400px] truncate">
               {post.description}
@@ -54,7 +60,6 @@ export function DataTable({ posts }: DataTableProps) {
             <TableCell className="font-mono">
               {new Date(post.postdate).toISOString().split("T")[0]}
             </TableCell>
-            <TableCell className="font-mono">{post.slug}</TableCell>
           </TableRow>
         ))}
       </TableBody>
