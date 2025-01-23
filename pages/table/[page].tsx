@@ -1,4 +1,5 @@
 import { DataTable } from "@/components/data-table";
+import ActivityChart from "@/components/ActivityChart";
 import ReactPaginate from "react-paginate";
 import { useState, useEffect } from "react";
 import { useRouter } from "next/router";
@@ -76,6 +77,7 @@ export default function TablePage() {
 
   return (
     <div className="container mx-auto py-10 flex flex-col justify-between min-h-screen">
+      <ActivityChart />
       <DataTable posts={currentPosts} />
     </div>
   );

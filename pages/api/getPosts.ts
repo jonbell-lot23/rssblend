@@ -1,7 +1,7 @@
 import prisma from "@/lib/prisma";
 
 export default async function handler(req, res) {
-  const { offset = 0, limit = 25, authorid } = req.query;
+  const { authorid } = req.query;
 
   try {
     const whereClause = {
@@ -15,8 +15,7 @@ export default async function handler(req, res) {
         include: {
           Source: true,
         },
-        skip: parseInt(offset as string, 10),
-        take: parseInt(limit as string, 10),
+        take: 100,
         ...whereClause,
       }),
       prisma.firehose.count(whereClause),
