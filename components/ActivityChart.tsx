@@ -16,7 +16,7 @@ const ActivityChart = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get("/api/getPosts");
+        const response = await axios.get<{ posts: any[] }>("/api/getPosts");
         const posts = response.data.posts;
 
         // Calculate the number of posts per day
@@ -31,8 +31,12 @@ const ActivityChart = () => {
 
         // Determine the date range
         const dates = posts.map((post) => new Date(post.postdate));
-        const minDate = new Date(Math.min(...dates));
-        const maxDate = new Date(Math.max(...dates));
+        const minDate = new Date(
+          Math.min(...dates.map((date) => date.getTime()))
+        );
+        const maxDate = new Date(
+          Math.max(...dates.map((date) => date.getTime()))
+        );
 
         // Fill in missing days
         const data = [];
