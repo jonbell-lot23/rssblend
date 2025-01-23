@@ -23,9 +23,13 @@ const ActivityChart = () => {
         const postsPerDay = posts.reduce((acc, post) => {
           const date = new Date(post.postdate).toLocaleDateString();
           if (!acc[date]) {
-            acc[date] = 0;
+            acc[date] = { count: 0, words: 0 };
           }
-          acc[date] += 1;
+          acc[date].count += 1;
+          const wordCount = post.description
+            ? post.description.split(/\s+/).length
+            : 0;
+          acc[date].words += wordCount;
           return acc;
         }, {});
 
@@ -44,11 +48,12 @@ const ActivityChart = () => {
           const dateStr = d.toLocaleDateString();
           data.push({
             date: dateStr,
-            count: postsPerDay[dateStr] || 0,
+            count: postsPerDay[dateStr]?.count || 0,
+            words: postsPerDay[dateStr]?.words || 0,
           });
         }
 
-        setChartData([...data].reverse());
+        setChartData(data.reverse());
       } catch (error) {
         console.error("Error fetching posts:", error);
       }
@@ -64,9 +69,11 @@ const ActivityChart = () => {
         <BarChart data={chartData}>
           <CartesianGrid strokeDasharray="3 3" stroke="#333" />
           <XAxis dataKey="date" stroke="#666" />
-          <YAxis stroke="#666" />
+          <YAxis yAxisId="left" stroke="#666" />
+          <YAxis yAxisId="right" orientation="right" stroke="#666" />
           <Tooltip />
-          <Bar dataKey="count" fill="#82ca9d" />
+          <Bar dataKey="count" fill="#82ca9d" yAxisId="right" barSize={20} />
+          <Bar dataKey="words" fill="#8884d8" yAxisId="left" barSize={20} />
         </BarChart>
       </ResponsiveContainer>
     </div>
