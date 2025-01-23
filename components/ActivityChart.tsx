@@ -72,8 +72,8 @@ const ActivityChart = () => {
           <YAxis yAxisId="left" stroke="#666" />
           <YAxis yAxisId="right" orientation="right" stroke="#666" />
           <Tooltip />
-          <Bar dataKey="count" fill="#82ca9d" yAxisId="right" barSize={20} />
-          <Bar dataKey="words" fill="#8884d8" yAxisId="left" barSize={20} />
+          <Bar dataKey="count" fill="#FFFFFF" yAxisId="right" barSize={20} />
+          <Bar dataKey="words" fill="#FFFF00" yAxisId="left" barSize={20} />
         </BarChart>
       </ResponsiveContainer>
     </div>
