@@ -55,7 +55,7 @@ export default function TablePage() {
       const limit = currentPage === 0 ? 100 : 25;
       const authorQuery = authorid ? `&authorid=${authorid}` : "";
       const response = await fetch(
-        `/api/getPosts?offset=${offset}&limit=${limit}${authorQuery}`
+        `/api/getPosts?offset=${offset}&limit=${limit}${authorQuery}&userid=1`
       );
       const data = await response.json();
       setPosts(data.posts || []);

@@ -5,7 +5,7 @@ export default async function handler(req, res) {
 
   try {
     const whereClause = {
-      where: authorid ? { userid: parseInt(authorid as string, 10) } : {},
+      where: { userid: 1 },
     };
     const [posts, total] = await Promise.all([
       prisma.firehose.findMany({

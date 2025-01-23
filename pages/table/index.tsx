@@ -5,7 +5,7 @@ export default function TableIndex() {
   const router = useRouter();
 
   useEffect(() => {
-    router.push("/table/all");
+    router.push("/table/1");
   }, [router]);
 
   return null;

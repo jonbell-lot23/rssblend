@@ -41,7 +41,7 @@ export function DataTable({ posts }: DataTableProps) {
       <TableBody>
         {posts.map((post) => (
           <TableRow key={post.url} className="even:bg-muted/50">
-            <TableCell>
+            <TableCell className="max-w-[240px] truncate">
               <div className="flex items-center">
                 <a href={`/table/${post.Source?.userid}/1`}>
                   <div className="w-4 h-4 bg-black rounded-full mr-2"></div>
@@ -54,7 +54,7 @@ export function DataTable({ posts }: DataTableProps) {
                 </a>
               </div>
             </TableCell>
-            <TableCell className="max-w-[400px] truncate">
+            <TableCell className="max-w-[640px] truncate">
               {post.description}
             </TableCell>
             <TableCell className="font-mono">
